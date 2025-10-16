@@ -1,1 +1,69 @@
-<p>gestion-tienda works!</p>
+<div class="store-container">
+  <div class="content-overlay">
+
+    <header class="store-header">
+      <img src="" alt="Historias Logo" class="historias-logo">
+      <h2 class="title-gestion">Gestion de Tienda</h2>
+    </header>
+
+    <section class="action-buttons">
+      <button mat-flat-button class="add-product-btn">
+        <span>Agregar Producto</span>
+      </button>
+    </section>
+
+    <mat-card class="main-card">
+      <mat-card-content>
+
+        <div class="stats-container">
+          <div class="stat-item">
+            <span class="stat-number">5</span>
+            <span class="stat-label">PRODUCTOS ACTIVOS</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">5</span>
+            <span class="stat-label">PEDIDOS PENDIENTES</span>
+          </div>
+        </div>
+
+        <h3 class="card-subtitle-products">Productos</h3>
+        <mat-list role="list">
+          <ng-container *ngFor="let producto of productosMasVendidos">
+            <br>
+            <mat-list-item role="listitem" class="product-item">
+              <img [src]="producto.imagen" alt="Producto Imagen" class="product-image">
+              <div class="product-info-details">
+                <p class="product-name">{{ producto.nombre }}</p>
+                <p class="product-stock">Stock: {{ producto.stock }} unidades</p>
+              </div>
+              <div class="product-pricing">
+                <p class="product-price">${{ producto.precio | number:'1.2-2' }} MXN</p>
+                <span class="status-badge" [ngClass]="{
+                  'status-active': producto.status === 'activo',
+                  'status-low': producto.status === 'bajo',
+                  'status-stockout': producto.status === 'agotado'
+                }">
+                  {{ producto.status === 'activo' ? 'Activo' : (producto.status === 'bajo' ? 'Stock bajo' : 'Sin stock') }}
+                </span>
+              </div>
+            </mat-list-item>
+            </ng-container>
+        </mat-list>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+<footer class="bottom-nav">
+  <div class="nav-item">
+    <mat-icon svgIcon="store-bag"></mat-icon> </div>
+  <div class="nav-item">
+    <mat-icon svgIcon="gift-box"></mat-icon> </div>
+  <div class="nav-item active">
+    <mat-icon svgIcon="home-filled"></mat-icon> </div>
+  <div class="nav-item">
+    <mat-icon svgIcon="chat-bubble"></mat-icon> </div>
+  <div class="nav-item">
+    <mat-icon svgIcon="chart-bar"></mat-icon> </div>
+</footer>

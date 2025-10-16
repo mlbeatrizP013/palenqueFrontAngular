@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de asistentes</title>
+</head>
+<body>
+    <div class="lista-asistentes-container">
+    <h2>Lista de Asistentes - Día de Cata</h2>
+
+    @if (asistentes.length > 0) {
+        <table class="tabla-asistentes">
+            <thead>
+                <tr>
+                <th>#</th>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (asistente of asistentes; track $index) {
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ asistente.nombre }}</td>
+                    <td>{{ asistente.correo }}</td>
+                    <td>
+                        <span
+                            [class.pendiente]="asistente.estado === 'pendiente'"
+                            [class.aprobada]="asistente.estado === 'aprobada'"
+                            [class.rechazada]="asistente.estado === 'rechazada'">
+                            {{ asistente.estado }}
+                        </span>
+                    </td>
+                    <td>
+                    <button class="btn-aceptar"
+                    (click)="confirmarAccion(asistente, 'aprobada')">
+                        Aprobar
+                    </button>
+                    <button class="btn-rechazar"
+                            (click)="confirmarAccion(asistente, 'rechazada')">
+                        Rechazar
+                    </button>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    } @else {
+            <p class="sin-asistentes">No hay asistentes registrados aún.</p>
+        }
+    </div>
+
+    @for (asistenteAprove of asistentesConfirmados; track $index) {
+        <div class="asistencia-confirmada">
+            <h2>Asistencia Confirmada</h2>
+            <ul>
+                <li>
+                <strong>{{ asistenteAprove.nombre }}</strong> - {{ asistenteAprove.correo }}
+                <span class="fecha">📅 {{ asistenteAprove.fecha | date:'shortDate' }}</span>
+                </li>
+            </ul>
+        </div>
+    }
+</body>
+</html>

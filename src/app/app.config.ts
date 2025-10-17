@@ -14,7 +14,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes), 
     provideClientHydration(withEventReplay()),
 
-    // 👇 2. Agrega el proveedor aquí
     provideHttpClient() 
   ]
 };

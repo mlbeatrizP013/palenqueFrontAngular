@@ -74,8 +74,9 @@
     width: 100%;
   }
 
+  /* Nota: ':hover' fue ajustado para usar solo CSS sin la función SASS/LESS 'darken()' */
   .add-product-btn:hover {
-    background-color: darken(var(--primary-green), 10%);
+    background-color: #318a4f; /* Un verde un poco más oscuro */
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
   }
 }
@@ -124,8 +125,9 @@
 .product-item {
   display: flex;
   align-items: center;
-  padding: 0.8rem 0;
+  padding: 1em 1em;
   width: 100%;
+  min-height: 60px; 
   border-bottom: 1px solid var(--card-border);
   justify-content: space-between;
 

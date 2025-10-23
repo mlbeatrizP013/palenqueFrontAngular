@@ -30,28 +30,28 @@ export class GestionTienda implements OnInit {
       stock: 25,
       precio: 1200,
       status: 'activo', 
-      imagen: 'https://via.placeholder.com/50' 
+      imagen: 'assets/images/botella.jpg' 
     },
     {
       nombre: 'Camiseta Palenque',
       stock: 12,
       precio: 350,
       status: 'bajo',
-      imagen: 'https://via.placeholder.com/50'
+      imagen: 'assets/images/botella.jpg'
     },
     {
       nombre: 'Artesanía Oaxaqueña',
       stock: 0,
       precio: 800,
       status: 'agotado',
-      imagen: 'https://via.placeholder.com/50'
+      imagen: 'assets/images/botella.jpg'
     },
     {
       nombre: 'Mezcal Artesanal', 
       stock: 15,
       precio: 1200,
       status: 'activo',
-      imagen: 'https://via.placeholder.com/50'
+      imagen: 'assets/images/botella.jpg'
     }
   ];
 
@@ -60,25 +60,36 @@ export class GestionTienda implements OnInit {
     private domSanitizer: DomSanitizer       
   ) {
     
-    this.matIconRegistry.addSvgIcon(
+   this.matIconRegistry.addSvgIcon(
       'store-bag',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/store-tienda.svg')
+      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/store.svg') // ⬅️ Correcto
     );
+    
+    // 2. Icono de Regalo (Gift Box)
+    // El archivo calendar-solid.svg es el único disponible, aunque no es lógico.
     this.matIconRegistry.addSvgIcon(
       'gift-box',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/calendar-solid.svg')
+      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/calendar.svg') // ⬅️ Usamos el disponible
     );
+    
+    // 3. Icono de Inicio (Home Filled)
+    // Usaremos el icono de tienda (Store) como el de 'Inicio' si no hay un icono de casa disponible.
+    // El 'comment-solid.svg' es incorrecto para 'home'.
     this.matIconRegistry.addSvgIcon(
       'home-filled',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/comment-solid.svg')
+      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/store.svg') // ⬅️ Usamos store-solid como placeholder para Home/Tienda
     );
+    
+    // 4. Icono de Chat/Burbuja
     this.matIconRegistry.addSvgIcon(
       'chat-bubble',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/comment-solid.svg')
+      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/comment.svg') // ⬅️ Correcto
     );
+    
+   
     this.matIconRegistry.addSvgIcon(
       'chart-bar',
-      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/store-solid.svg')
+      this.domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/signal.svg') // ⬅️ Usamos el archivo signal-solid.svg
     );
   }
 

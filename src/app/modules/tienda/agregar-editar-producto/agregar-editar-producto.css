@@ -1,0 +1,180 @@
+/* ==================================== */
+/* 1. ESTILOS BASE Y TIPOGRAFÍA */
+/* ==================================== */
+
+:root {
+    --color-primary: #800000; /* Color principal (ej. para el logo) */
+    --color-dark: #333333;   /* Negro oscuro para fondo de header */
+    --color-background: #EFEFEF; /* Fondo gris claro de la aplicación */
+    --color-card-bg: #FFFFFF; /* Fondo blanco para la tarjeta del formulario */
+    --color-success: #198754; /* Verde para botón Guardar */
+    --color-danger: #DC3545;  /* Rojo para botón Cancelar */
+    --color-text-label: #555555;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #A9947D; /* Color de fondo exterior de la maqueta */
+}
+
+.app-container {
+    max-width: 450px; /* Ancho máximo para simular un móvil en web */
+    margin: 0 auto;
+    background-color: var(--color-background);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ==================================== */
+/* 2. HEADER Y LOGO */
+/* ==================================== */
+
+.header {
+    background-color: var(--color-dark);
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.logo-container {
+    background: url('tu-textura-de-fondo.png') repeat-x; /* Reemplazar con su textura si es necesario */
+    background-color: #222;
+    padding: 15px 0;
+    margin: 0 10px; /* Para simular el margen que tiene la textura del logo */
+    border-radius: 5px;
+    
+    /* El logo en su imagen parece tener un color de fondo diferente. 
+       Ajusté el texto para simular el diseño */
+}
+
+.logo-title {
+    font-size: 24px;
+    margin: 0;
+    letter-spacing: 5px;
+    font-weight: 500;
+}
+
+/* ==================================== */
+/* 3. CONTENIDO PRINCIPAL Y FORMULARIO */
+/* ==================================== */
+
+.content-wrapper {
+    padding: 20px;
+    flex-grow: 1;
+}
+
+.form-title {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--color-dark);
+    margin-bottom: 20px;
+}
+
+.form-card {
+    background-color: var(--color-card-bg);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    color: var(--color-text-label);
+    margin-bottom: 5px;
+}
+
+.input-group input,
+.input-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+    box-sizing: border-box; /* Incluye padding y borde en el ancho total */
+    font-size: 16px;
+}
+
+.input-group textarea {
+    resize: vertical;
+}
+
+/* Estilo para los campos de precio y stock */
+.input-row {
+    display: flex;
+    gap: 15px; /* Espacio entre los dos campos */
+    margin-bottom: 15px;
+}
+
+.half-width {
+    flex: 1; /* Hace que cada uno ocupe la mitad del espacio */
+}
+
+/* ==================================== */
+/* 4. BOTONES DE ACCIÓN */
+/* ==================================== */
+
+.button-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn {
+    flex: 1;
+    padding: 12px 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background-color 0.2s;
+}
+
+.btn-save {
+    background-color: var(--color-success);
+    color: white;
+}
+
+.btn-cancel {
+    background-color: var(--color-danger);
+    color: white;
+}
+
+/* ==================================== */
+/* 5. FOOTER / BARRA DE NAVEGACIÓN INFERIOR */
+/* ==================================== */
+
+.footer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: white;
+    padding: 10px 0;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    position: sticky; /* Se mantiene en la parte inferior */
+    bottom: 0;
+    width: 100%;
+    max-width: 450px; /* Coincide con el ancho del app-container */
+    margin: 0 auto;
+}
+
+.nav-icon {
+    font-size: 24px;
+    color: #AAAAAA; /* Íconos inactivos */
+    padding: 5px;
+}
+
+.nav-icon.active {
+    color: var(--color-dark); /* Ícono activo */
+}

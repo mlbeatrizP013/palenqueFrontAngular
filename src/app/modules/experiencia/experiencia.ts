@@ -1,6 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormBuilder,Validators, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { ExperienciaService } from '../../../app/services/experiencia.service';
+
 @Component({
   selector: 'app-experiencia',
   imports: [CommonModule, ReactiveFormsModule],
@@ -11,9 +14,10 @@ export class Experiencia {
   experienciaForm: FormGroup;
   esEdicion = false;
   menuAbierto = false;
+  experienciaId?: number;
+  experiencias: Experiencia[] = [];
 
-  constructor(private fb: FormBuilder) {
-    // Formulario base con validadores mínimos
+  constructor(private fb: FormBuilder ) {
     this.experienciaForm = this.fb.group({
       nombre: ['', [Validators.required, Validators.minLength(3)]],
       fecha: ['', Validators.required],

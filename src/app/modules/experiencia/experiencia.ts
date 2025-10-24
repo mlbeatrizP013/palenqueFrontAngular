@@ -1,8 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component,computed, signal, inject,ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder,Validators, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ExperienciaService } from '../../../app/services/experiencia.service';
+
+interface Experiencias {
+  id: number;
+  nombre: string;
+  fecha: string; 
+  hora: string; 
+  descripcion: string;
+  creadoEn: Date;
+}
 
 @Component({
   selector: 'app-experiencia',

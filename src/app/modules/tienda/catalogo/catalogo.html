@@ -1,106 +1,126 @@
 <div class="app-container">
-    
+
     <header class="header">
         <div class="search-bar">
             <input type="text" placeholder="Buscar producto..." class="search-input">
-            <i class="search-icon">🔍</i>
+            <i class="search-icon material-icons">search</i>
         </div>
         <div class="header-actions">
-            <i class="notification-icon">🔔</i>
+            <i class="notification-icon material-icons">notifications</i>
             <div class="profile-pic"></div>
         </div>
     </header>
 
-    <h1 class="page-title">Inventario de Mezcales</h1>
+    <h1 class="page-title">Gestión de Tienda</h1>
 
+    <section class="key-stats-container">
+        <div class="stat-card">
+            <p class="stat-value">5</p>
+            <p class="stat-label">PRODUCTOS ACTIVOS</p>
+        </div>
+        <div class="stat-card">
+            <p class="stat-value pending">5</p>
+            <p class="stat-label">PEDIDOS PENDIENTES</p>
+        </div>
+    </section>
+
+    <button class="add-product-button">
+        Agregar Producto
+    </button>
+    
     <nav class="tabs-container">
-        <a class="tab active">Todos</a>
-        <a class="tab">Añejos</a>
-        <a class="tab">Reposados</a>
-        <a class="tab">Jóvenes</a>
+        <ul class="tabs-list">
+            <li><a class="tab active" href="#">Todos</a></li>
+            <li><a class="tab" href="#">Añejos</a></li>
+            <li><a class="tab" href="#">Reposados</a></li>
+            <li><a class="tab" href="#">Jóvenes</a></li>
+        </ul>
     </nav>
 
-    <section class="products-list">
+    <ul class="products-list">
         
-        <div class="product-card">
-            
+        <li class="product-card">
             <div class="product-image-container">
-                <div class="mezcal-icon">
-                    <i class="bottle-icon">🥃</i>
-                </div> 
+                <img src="placeholder-mezcal-bottle.png" alt="Botella de Mezcal" class="product-image">
             </div>
 
             <div class="product-details">
-                <div class="product-name-section">
-                    <h2 class="product-name">Mezcal Pechuga de Pavo</h2>
-                    <p class="product-type">Blanco / 750ml</p>
-                </div>
-                
+                <h2 class="product-name">Mezcal Artesanal</h2>
                 <div class="product-info-grid">
                     <div class="info-item stock">
-                        <span class="label">Stock</span>
-                        <span class="value">10</span>
+                        <span class="label">stock</span>
+                        <span class="value">25 unidades</span>
                     </div>
-                    
                     <div class="info-item price">
-                        <span class="label">Precio</span>
-                        <span class="value">$2,800</span>
+                        <span class="label">precio</span>
+                        <span class="value">$1,200 MXN</span>
                     </div>
-                    
                     <div class="info-item status">
-                        <span class="label">Estado</span>
-                        <span class="value status-active">Activo</span>
+                        <span class="status-badge status-active">Activa</span>
                     </div>
                 </div>
             </div>
+            <i class="options-icon material-icons">more_vert</i>
+        </li>
 
-            <div class="product-actions">
-                <i class="options-icon">⋮</i> 
-            </div>
-            
-        </div>
-
-        <div class="product-card">
+        <li class="product-card">
             <div class="product-image-container">
-                <div class="mezcal-icon">
-                    <i class="bottle-icon">🥃</i>
-                </div>
+                <img src="placeholder-mezcal-bottle.png" alt="Botella de Mezcal" class="product-image">
             </div>
+
             <div class="product-details">
-                <div class="product-name-section">
-                    <h2 class="product-name">Mezcal Espadín</h2>
-                    <p class="product-type">Reposado / 500ml</p>
-                </div>
+                <h2 class="product-name">Mezcal Artesanal</h2>
                 <div class="product-info-grid">
                     <div class="info-item stock">
-                        <span class="label">Stock</span>
-                        <span class="value stock-low">2</span>
+                        <span class="label">stock</span>
+                        <span class="value stock-low">5 unidades</span>
                     </div>
                     <div class="info-item price">
-                        <span class="label">Precio</span>
-                        <span class="value">$450</span>
+                        <span class="label">precio</span>
+                        <span class="value">$1,200 MXN</span>
                     </div>
                     <div class="info-item status">
-                        <span class="label">Estado</span>
-                        <span class="value status-inactive">Inactivo</span>
+                        <span class="status-badge status-warning">stock bajo</span>
                     </div>
                 </div>
             </div>
-            <div class="product-actions">
-                <i class="options-icon">⋮</i>
-            </div>
-        </div>
+            <i class="options-icon material-icons">more_vert</i>
+        </li>
         
-    </section>
-    
-    <button class="add-button">+</button>
-    
-  <div class="bottom-nav-bar">
-        <span class="material-icons">store</span>
-        <span class="material-icons">calendar_today</span>
-        <span class="material-icons">home</span>
-        <span class="material-icons">chat</span>
-        <span class="material-icons">bar_chart</span>
-    </div>
+        <li class="product-card">
+            <div class="product-image-container">
+                <img src="placeholder-mezcal-bottle.png" alt="Botella de Mezcal" class="product-image">
+            </div>
+
+            <div class="product-details">
+                <h2 class="product-name">Mezcal Artesanal</h2>
+                <div class="product-info-grid">
+                    <div class="info-item stock">
+                        <span class="label">stock</span>
+                        <span class="value stock-out">0 unidades</span>
+                    </div>
+                    <div class="info-item price">
+                        <span class="label">precio</span>
+                        <span class="value">$1,200 MXN</span>
+                    </div>
+                    <div class="info-item status">
+                        <span class="status-badge status-out-of-stock">sin stock</span>
+                    </div>
+                </div>
+            </div>
+            <i class="options-icon material-icons">more_vert</i>
+        </li>
+        
+    </ul>
+
+    <nav class="bottom-nav-bar">
+        <ul class="nav-list">
+            <li><a href="#" class="nav-item active-nav"><i class="material-icons">store</i></a></li>
+            <li><a href="#" class="nav-item"><i class="material-icons">calendar_today</i></a></li>
+            <li><a href="#" class="nav-item"><i class="material-icons">home</i></a></li>
+            <li><a href="#" class="nav-item"><i class="material-icons">chat</i></a></li>
+            <li><a href="#" class="nav-item"><i class="material-icons">bar_chart</i></a></li>
+        </ul>
+    </nav>
     
 </div>

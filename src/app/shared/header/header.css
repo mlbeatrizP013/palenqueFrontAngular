@@ -1,0 +1,32 @@
+
+
+.app-header {
+  background-color: var(--color-text-dark, #212121); 
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky; 
+  top: 0;
+  z-index: 100;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.app-logo {
+  height: 40px; 
+}
+
+.app-title {
+ 
+  color: var(--color-text-light, #ffffff); 
+  font-family: var(--font-family-base); 
+  font-size: var(--font-size-h2, 24px); 
+  font-weight: var(--font-weight-bold, 700);
+  margin-left: 10px; 
+  text-transform: uppercase;
+}

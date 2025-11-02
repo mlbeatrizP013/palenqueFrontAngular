@@ -1,0 +1,328 @@
+:root {
+    --primary-main: #4CAF50;
+    --primary-dark: #38424B;
+    --primary-accent: #E74C3C;
+    --background-color: #F8F8F8;
+    --card-background: #FFFFFF;
+    --text-color: #333333;
+    --label-color: #8E8E93;
+    
+    --status-active-color: #4CAF50;
+    --status-warning-color: #F39C12;
+    --status-out-of-stock-color: #C0392B;
+    
+    --nav-height: 60px;
+}
+
+.app-container {
+    padding: 15px;
+    background-color: var(--background-color);
+    min-height: 100vh;
+    font-family: 'SF Pro Display', 'Roboto', sans-serif;
+    padding-bottom: var(--nav-height);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #EFEFF4;
+    border-radius: 10px;
+    padding: 8px 12px;
+    flex-grow: 1;
+    margin-right: 15px;
+}
+
+.search-input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 16px;
+    padding: 0 10px;
+    flex-grow: 1;
+}
+
+.search-icon {
+    color: var(--label-color);
+    font-size: 20px;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notification-icon {
+    font-size: 24px;
+    color: var(--label-color);
+}
+
+.profile-pic {
+    width: 32px;
+    height: 32px;
+    background-color: var(--primary-dark);
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.page-title {
+    font-size: 22px;
+    color: var(--primary-dark);
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.add-product-button {
+    background-color: var(--primary-main);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 20px;
+    display: block;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.key-stats-container {
+    display: flex;
+    justify-content: space-around;
+    background-color: var(--card-background);
+    border-radius: 12px;
+    padding: 15px 0;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.stat-card {
+    text-align: center;
+    flex: 1;
+    position: relative;
+}
+
+.stat-card:first-child::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 60%;
+    width: 1px;
+    background-color: #EAECEE;
+}
+
+.stat-value {
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--primary-dark);
+    margin: 0;
+    line-height: 1.1;
+}
+
+.stat-value.pending {
+    color: var(--primary-accent);
+}
+
+.stat-label {
+    font-size: 12px;
+    color: var(--label-color);
+    margin: 5px 0 0 0;
+    font-weight: 500;
+}
+
+.tabs-container {
+    margin-bottom: 15px;
+}
+
+.tabs-list {
+    display: flex;
+    overflow-x: auto;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    white-space: nowrap;
+    border-bottom: 1px solid #EAECEE;
+}
+
+.tabs-list li {
+    padding: 0 5px;
+}
+
+.tab {
+    display: block;
+    padding: 10px 10px;
+    text-decoration: none;
+    color: var(--label-color);
+    font-weight: 600;
+    font-size: 14px;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.tab.active {
+    color: var(--primary-dark);
+    border-bottom: 3px solid var(--primary-main);
+    font-weight: 700;
+}
+
+.products-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.product-card {
+    display: flex;
+    align-items: center;
+    background-color: var(--card-background);
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.product-image-container {
+    width: 50px;
+    height: 50px;
+    background-color: var(--background-color);
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 15px;
+}
+
+.product-image {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+}
+
+.product-details {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.product-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--primary-dark);
+    margin: 0 0 5px 0;
+    line-height: 1.2;
+}
+
+.product-info-grid {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+    white-space: nowrap;
+}
+
+.label {
+    font-size: 10px;
+    color: var(--label-color);
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-bottom: 0px;
+}
+
+.value {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.stock-low {
+    color: var(--primary-accent);
+}
+
+.stock-out {
+    color: var(--status-out-of-stock-color);
+}
+
+.status-badge {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    display: inline-block;
+    color: white;
+}
+
+.status-active {
+    background-color: var(--status-active-color);
+}
+
+.status-warning {
+    background-color: var(--status-warning-color);
+}
+
+.status-out-of-stock {
+    background-color: var(--status-out-of-stock-color);
+}
+
+.options-icon {
+    font-size: 24px;
+    color: var(--label-color);
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.bottom-nav-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: var(--nav-height);
+    background-color: var(--card-background);
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 99;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.nav-list {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    height: 100%;
+}
+
+.nav-item {
+    color: var(--label-color);
+    flex-grow: 1;
+    text-align: center;
+    font-size: 24px;
+    padding: 10px 0;
+    transition: color 0.3s ease;
+}
+
+.nav-item.active-nav {
+    color: var(--primary-main);
+}

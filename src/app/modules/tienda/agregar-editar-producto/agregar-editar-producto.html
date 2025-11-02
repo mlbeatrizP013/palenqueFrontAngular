@@ -1,1 +1,65 @@
-<p>agregar-editar-producto works!</p>
+<div class="app-container">
+    <header class="header">
+        <div class="logo-container">
+            <h1 class="logo-title">HISTORIAS</h1>
+        </div>
+    </header>
+
+    <main class="content-wrapper">
+        <h2 class="form-title">AGREGAR/ EDITAR PRODUCTO</h2>
+
+        <div class="form-card">
+            <form>
+                <div class="input-group">
+                    <label for="nombre">Nombre del producto</label>
+                    <input type="text" id="nombre">
+                </div>
+
+                <div class="input-group">
+                    <label for="categoria">categoria</label>
+                    <input type="text" id="categoria">
+                </div>
+
+                <div class="input-group">
+                    <label for="descripcion">descripcion</label>
+                    <input type="text" id="descripcion">
+                </div>
+
+                <div class="input-row">
+                    <div class="input-group half-width">
+                        <label for="precio">precio MXN</label>
+                        <input type="number" id="precio">
+                    </div>
+
+                    <div class="input-group half-width">
+                        <label for="stock-inicial">Stock inicial</label>
+                        <input type="number" id="stock-inicial">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="stock-minimo">Stock Mínimo</label>
+                    <input type="number" id="stock-minimo">
+                </div>
+
+                <div class="input-group">
+                    <label for="imagen">Imagen del producto</label>
+                    <textarea id="imagen" rows="4"></textarea>
+                </div>
+
+                <div class="button-row">
+                    <button type="submit" class="btn btn-save">Guardar</button>
+                    <button type="button" class="btn btn-cancel">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="nav-icon">🍔</div>
+        <div class="nav-icon">📅</div>
+        <div class="nav-icon active">🏠</div>
+        <div class="nav-icon">💬</div>
+        <div class="nav-icon">📈</div>
+    </footer>
+</div>

@@ -1,0 +1,240 @@
+/* Necesitará incluir esta línea en la sección <head> de su index.html 
+   para que los íconos (material-icons) funcionen:
+   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+*/
+
+/* ==================================== */
+/* 1. ESTILOS BASE Y CONTENEDOR */
+/* ==================================== */
+
+:root {
+    --color-primary: #800000; /* Color principal (simula color="primary") */
+    --color-warn: #DC3545;    /* Rojo para el botón Eliminar (simula color="warn") */
+    --color-dark: #333;       /* Texto oscuro */
+    --color-light: #FFF;      /* Fondo/Texto claro */
+    --color-shadow: rgba(0, 0, 0, 0.1);
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #EFEFEF; /* Fondo de la aplicación */
+}
+
+.moderacion-container {
+    max-width: 450px; /* Simulación de dispositivo móvil */
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ==================================== */
+/* 2. HEADER */
+/* ==================================== */
+
+.header-toolbar {
+    background-color: var(--color-primary); /* Toolbar color */
+    color: var(--color-light);
+    padding: 15px 0;
+    box-shadow: 0 2px 4px var(--color-shadow);
+}
+
+.header-background {
+    /* Aquí iría la textura si desea replicarla */
+    padding: 10px 20px;
+    text-align: center;
+}
+
+.header-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* ==================================== */
+/* 3. PESTAÑAS DE NAVEGACIÓN (TABS) */
+/* ==================================== */
+
+.moderacion-tabs {
+    flex-grow: 1; /* Permite que el contenido ocupe el espacio restante */
+    display: flex;
+    flex-direction: column;
+}
+
+.tab-header-list {
+    display: flex;
+    justify-content: space-around;
+    background-color: var(--color-light);
+    border-bottom: 2px solid #ccc;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.tab-header {
+    flex: 1;
+    padding: 15px 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+}
+
+.tab-header.active {
+    color: var(--color-primary);
+    border-bottom: 3px solid var(--color-primary);
+    font-weight: bold;
+}
+
+.tab-content {
+    padding: 15px 10px;
+    /* Solo se muestra el contenido activo; requiere JS para la funcionalidad de pestañas */
+}
+
+/* ==================================== */
+/* 4. TARJETAS DE PUBLICACIÓN (CARDS) */
+/* ==================================== */
+
+.foro-card {
+    background-color: var(--color-light);
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px var(--color-shadow);
+    padding: 10px 15px; /* Ajuste para el contenido interno */
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    padding-bottom: 10px;
+    position: relative;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.user-avatar .material-icons {
+    font-size: 24px;
+    color: #888;
+}
+
+.card-user-info {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.card-date-info {
+    font-size: 12px;
+    color: #999;
+    margin-left: 10px;
+    /* Para que el texto de fecha se alinee con el usuario, ajustamos el layout si es necesario */
+}
+
+.card-options {
+    margin-left: auto; /* Mueve el botón de opciones al final */
+    position: relative; /* Para el menú desplegable */
+}
+
+.options-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.options-button .material-icons {
+    font-size: 24px;
+    color: var(--color-dark);
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: var(--color-light);
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px var(--color-shadow);
+    z-index: 20;
+    min-width: 120px;
+    display: none; /* Oculto por defecto, necesita JS para mostrarse */
+    flex-direction: column;
+}
+
+.dropdown:hover .dropdown-menu {
+    /* Esto es solo una demostración básica, en móvil se activaría con click (JS) */
+    display: flex; 
+}
+
+.menu-item {
+    background: none;
+    border: none;
+    padding: 10px 15px;
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
+}
+
+.menu-item:hover {
+    background-color: #f0f0f0;
+}
+
+.card-post-content {
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+    margin-top: 5px;
+}
+
+.card-post-content p {
+    margin: 0;
+    color: var(--color-dark);
+}
+
+
+.action-button-wrapper {
+    text-align: center;
+    padding: 10px 0;
+}
+
+.btn-delete {
+    background-color: var(--color-warn);
+    color: var(--color-light);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.bottom-nav-bar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: var(--color-light);
+    padding: 10px 0;
+    box-shadow: 0 -2px 5px var(--color-shadow);
+    margin-top: auto; /* Empuja la barra al final del contenedor */
+}
+
+.bottom-nav-bar .material-icons {
+    font-size: 28px;
+    color: #999;
+    cursor: pointer;
+}
+
+.bottom-nav-bar .material-icons:nth-child(3) { /* Asumiendo que 'home' es el icono activo */
+    color: var(--color-primary);
+}

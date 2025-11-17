@@ -1,94 +1,110 @@
-.solicitud {
-	max-width: 560px;
-	margin: 16px auto;
-	padding: 16px;
-	background: #fff;
-	border: 1px solid #e5e7eb;
-	border-radius: 8px;
+/* Asegura que el scroll interno funcione */
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden; /* Evita doble scroll en la página */
 }
+
+/* Contenedor principal con scroll interno */
 .solicitud {
-    max-height: 100vh;
+    max-width: 560px;
+    margin: 16px auto;
+    padding: 16px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+  
+    /* Scroll */
+    height: calc(100vh - 32px); /* resta márgenes */
     overflow-y: auto;
-    padding: 1rem;
+  
+    /* Espacio extra abajo */
+    padding-bottom: 80px;
   }
   
+  
+  
+/* ==== FORM & FIELDS ==== */
 .field {
-	display: grid;
-	gap: 6px;
-	margin-bottom: 12px;
+  display: grid;
+  gap: 6px;
+  margin-bottom: 12px;
 }
 
 input, select, button {
-	padding: 8px 10px;
-	border: 1px solid #d1d5db;
-	border-radius: 6px;
+  padding: 8px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
 }
 
 button[disabled] {
-	opacity: 0.6;
-	cursor: not-allowed;
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .error { color: #b91c1c; }
 .success { color: #065f46; }
 
+/* ==== CARDS ==== */
 .cata-grid {
-	display: grid;
-	grid-template-columns: 1fr;
-	gap: 12px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
 }
 
 @media (min-width: 640px) {
-	.cata-grid {
-		grid-template-columns: repeat(2, 1fr);
-	}
+  .cata-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .cata-card {
-	border: 1px solid #e5e7eb;
-	border-radius: 8px;
-	padding: 12px;
-	background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 12px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05); /* para que se vean como cards */
 }
 
 .cata-card header {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
 }
 
 .cata-meta {
-	display: flex;
-	gap: 12px;
-	font-size: 12px;
-	color: #4b5563;
-	margin: 8px 0 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 12px;
+  color: #4b5563;
+  margin: 8px 0 12px;
 }
 
 .cata-resumen {
-	display: flex;
-	gap: 8px;
-	align-items: center;
-	margin-bottom: 12px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
 }
 
 .link {
-	background: transparent;
-	border: none;
-	color: #2563eb;
-	cursor: pointer;
+  background: transparent;
+  border: none;
+  color: #2563eb;
+  cursor: pointer;
 }
 
 .badge {
-	padding: 2px 6px;
-	border-radius: 999px;
-	font-size: 12px;
-	background: #eef2ff;
-	color: #3730a3;
+  padding: 2px 6px;
+  border-radius: 999px;
+  font-size: 12px;
+  background: #eef2ff;
+  color: #3730a3;
 }
 
 .badge.warn {
-	background: #fee2e2;
-	color: #991b1b;
+  background: #fee2e2;
+  color: #991b1b;
 }

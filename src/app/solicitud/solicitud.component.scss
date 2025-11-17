@@ -6,7 +6,12 @@
 	border: 1px solid #e5e7eb;
 	border-radius: 8px;
 }
-
+.solicitud {
+    max-height: 100vh;
+    overflow-y: auto;
+    padding: 1rem;
+  }
+  
 .field {
 	display: grid;
 	gap: 6px;

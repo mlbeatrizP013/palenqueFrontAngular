@@ -1,0 +1,69 @@
+:host {
+    display: block;
+    height: 100vh;          /* ocupa toda la pantalla */
+    overflow-y: auto;       /* activa scroll vertical */
+    padding: 16px;
+    box-sizing: border-box;
+  }
+  
+  .bebida-card {
+    background: #fff;
+    padding: 16px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .bebida-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  
+  .categoria {
+    background: #eee;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+  }
+  
+  .bebida-body {
+    display: flex;
+    gap: 16px;
+  }
+  
+  .bebida-imagen {
+    width: 120px;
+    height: auto;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+  
+  .bebida-info {
+    flex: 1;
+  }
+
+    .controls {
+      margin: 12px 0 16px;
+    }
+
+    .qty-controls {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .qty-controls button {
+      width: 28px;
+      height: 28px;
+    }
+
+    .apartar {
+      margin-top: 8px;
+    }
+  
+  .descripcion {
+    margin-bottom: 8px;
+  }
+  

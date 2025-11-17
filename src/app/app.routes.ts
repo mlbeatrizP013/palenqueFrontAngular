@@ -3,6 +3,7 @@ import { TabsComponent } from './tabs/tabs.component';
 import { HomeComponent } from './home/home.component';
 import { ForoComponent } from './foro/foro.component';
 import { TiendaComponent } from './tienda/tienda.component';
+import { SolicitudComponent } from './solicitud/solicitud.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'tabs', pathMatch: 'full' },
@@ -13,6 +14,7 @@ export const routes: Routes = [
       { path: 'home', component: HomeComponent },
       { path: 'foro', component: ForoComponent },
       { path: 'tienda', component: TiendaComponent },
+      { path: 'solicitudes',component: SolicitudComponent },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
     ],
   },

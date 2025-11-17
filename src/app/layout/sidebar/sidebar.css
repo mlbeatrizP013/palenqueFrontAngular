@@ -16,21 +16,19 @@
 }
 
 .logo-header {
-  display: flex;
-  align-items: center;
-  padding: 16px 8px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  /* ...otros estilos... */
 
-  .logo-text h2 { margin: 0; font-size: 1.2rem; font-weight: 700; }
-  .logo-text p { margin: 0; font-size: 0.8rem; color: rgba(255, 255, 255, 0.7); }
-
-  /* Estilo para el SVG del logo */
-  .sidebar-icon {
-    width: 2.5rem;
-    height: 2.5rem;
+  /* Estilo para tu logo personalizado */
+  .sidebar-logo-img {
+    height: 50px;  /* 2.5rem = 40px. Ajusta la altura como necesites */
+    width: 200px;   /* Ajusta el ancho como necesites */
     margin-right: 12px;
-    flex-shrink: 0; /* Evita que el icono se encoja */
+    flex-shrink: 0;
+    object-fit: contain; /* Evita que la imagen se distorsione */
+    border-radius: 4px; /* Opcional: si tu logo es cuadrado */
   }
+
+  
 }
 
 /* CSS para <nav> y <a> */

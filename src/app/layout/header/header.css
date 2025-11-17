@@ -1,0 +1,57 @@
+.header-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 60px;
+  background: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.header-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  
+  &.start { flex: 1; justify-content: flex-start; }
+  &.center { flex: 1; justify-content: center; }
+  &.end { flex: 1; justify-content: flex-end; }
+}
+
+.header-title {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #333;
+  font-weight: 700;
+}
+
+.header-nav-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espacio entre icono y texto */
+  padding: 8px 12px;
+  border-radius: 6px;
+  color: #666;
+  font-size: 0.95rem;
+  font-weight: 500;
+  
+  /* ---- ESTILO AÑADIDO PARA LOS SVG ---- */
+  .header-icon {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+  /* ------------------------------------- */
+  
+  &.active-nav {
+    color: #5f7a61;
+    font-weight: 700;
+  }
+  
+  &:hover:not(.active-nav) {
+    background: #f4f4f4;
+  }
+}

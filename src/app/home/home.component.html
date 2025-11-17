@@ -1,3 +1,65 @@
-<p>
-  home works!
-</p>
+@if (infoHome$ | async; as info) {
+
+  @if (info.length > 0) {
+
+    @for (item of info; track item.id) {
+
+      <article class="info-card">
+
+        <header>
+          <h1>Historia</h1>
+        </header>
+
+        <p>{{ item.historia }}</p>
+
+        <h2>Visión</h2>
+        <p>{{ item.vision }}</p>
+
+        <h2>Misión</h2>
+        <p>{{ item.mision }}</p>
+
+        <h2>Valores</h2>
+        <p>{{ item.valores }}</p>
+
+        <h2>Normas de Producción</h2>
+        <p>{{ item.normasProduccion }}</p>
+
+        <h2>Maestro Mezcalero</h2>
+        <p>{{ item.maestroMezcal }}</p>
+
+        <h2>Ubicación</h2>
+        <p>{{ item.ubicacion }}</p>
+
+        <h2>Contacto</h2>
+        <p>Tel: {{ item.numeroContacto }}</p>
+        <p>Base64 (primeros 40 chars): {{ item.imageUrl.slice(0, 40) }}</p>
+<p>Longitud: {{ item.imageUrl.length }}</p>
+
+
+
+        <h2>Imagen</h2>
+
+        @if (item.imageUrl) {
+          <img [src]="item.imageUrl" alt="Imagen" />
+
+        }
+
+        <footer>
+          <small>Creado: {{ item.createdAt | date:'medium' }}</small>
+        </footer>
+
+      </article>
+
+    }
+
+  } @else {
+
+    <p>No hay información disponible.</p>
+
+  }
+
+} @else {
+
+  <p>Cargando información...</p>
+
+}

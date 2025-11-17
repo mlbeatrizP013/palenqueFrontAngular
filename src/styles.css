@@ -6,3 +6,7 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Override: permitir scroll cuando Ionic global CSS está activo */
+body { overflow-y: auto !important; }
+html, body { min-height: 100%; height: auto; }

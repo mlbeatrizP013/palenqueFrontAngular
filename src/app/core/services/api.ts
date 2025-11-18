@@ -6,9 +6,8 @@ import { catchError } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root',
 })
-export class Api { // Renombrado de ServiceAPI a ApiService
-
-  // URLs de tu backend (NestJS, etc.)
+export class Api { 
+  // URLs de tu backend
   private baseUrl = 'http://localhost:3000/diaCata'; 
   private urlUsuario = 'http://localhost:3000/usuario';
   private urlInfoHome = 'http://localhost:3000/info-home';
@@ -17,7 +16,9 @@ export class Api { // Renombrado de ServiceAPI a ApiService
 
   constructor(private http: HttpClient) {}
 
+  // ===================================
   // --- MÉTODOS DE EXPERIENCIAS (diaCata) ---
+  // ===================================
 
   // Método para obtener todos los registros de experiencias
   findAll(): Observable<any> {
@@ -34,55 +35,48 @@ export class Api { // Renombrado de ServiceAPI a ApiService
     return this.http.post(`${this.baseUrl}/create`, data);
   }
 
-  // Método para actualizar una experiencia por ID
+  // Método para actualizar una experiencia por ID (Mantiene lógica de fallback)
   patchExperiencia(id: number, data: any): Observable<any> {
-    // Intenta el endpoint más probable y, si devuelve 404, prueba alternativas.
     return this.http.patch(`${this.baseUrl}/update/${id}`, data).pipe(
       catchError((err) => {
-        console.warn('patchExperiencia: primary endpoint failed', err?.status);
-        if (err?.status === 404) {
-          // Fallback 1: PATCH /diaCata/{id}
-          return this.http.patch(`${this.baseUrl}/${id}`, data).pipe(
-            catchError((err2) => {
-              console.warn('patchExperiencia: fallback 1 failed', err2?.status);
-              // Fallback 2: PATCH /diaCata/update (id en body)
-              return this.http.patch(`${this.baseUrl}/update`, { id, ...data }).pipe(
-                catchError((err3) => {
-                  console.error('patchExperiencia: all attempts failed');
-                  return throwError(() => err3);
-                })
-              );
-            })
-          );
-        }
-        return throwError(() => err);
+        return this.http.patch(`${this.baseUrl}/${id}`, data).pipe(
+          catchError((err2) => {
+            // Fallback 2: PATCH /diaCata/update (id en body)
+            return this.http.patch(`${this.baseUrl}/update`, { id, ...data }).pipe(
+              catchError((err3) => {
+                console.error('patchExperiencia: all attempts failed');
+                return throwError(() => err3);
+              })
+            );
+          })
+        );
       })
     );
   }
 
-  // Método para eliminar una experiencia por ID
   deleteExperiencia(id: number): Observable<any> {
-    // Usamos responseType: 'text' porque algunos endpoints devuelven texto plano
-    return this.http.delete(`${this.baseUrl}/delete/${id}`, { responseType: 'text' as 'json' }).pipe(
+    const options = { responseType: 'text' as 'json' };
+    
+    return this.http.delete(`${this.baseUrl}/delete/${id}`, options).pipe(
       catchError((err) => {
-        if (err?.status === 404) {
-          // Primera alternativa: DELETE /diaCata/remove/{id}
-          return this.http.delete(`${this.baseUrl}/remove/${id}`, { responseType: 'text' as 'json' }).pipe(
-            catchError((err2) => {
-              if (err2?.status === 404) {
-                // Segunda alternativa: DELETE /diaCata/{id}
-                return this.http.delete(`${this.baseUrl}/${id}`, { responseType: 'text' as 'json' });
-              }
-              return throwError(() => err2);
-            })
-          );
-        }
-        return throwError(() => err);
+        // Primera alternativa: DELETE /diaCata/remove/{id}
+        return this.http.delete(`${this.baseUrl}/remove/${id}`, options).pipe(
+          catchError((err2) => {
+            // Segunda alternativa: DELETE /diaCata/{id}
+            return this.http.delete(`${this.baseUrl}/${id}`, options).pipe(
+              catchError((err3) => {
+                return throwError(() => err3);
+              })
+            );
+          })
+        );
       })
     );
   }
 
+  // ===================================
   // --- MÉTODOS DE BEBIDAS ---
+  // ===================================
 
   // Metodo para obtener todas las bebidas
   findAllBebidas():Observable<any> {
@@ -114,18 +108,47 @@ export class Api { // Renombrado de ServiceAPI a ApiService
     return this.http.get(`${this.urlBebidas}/byCategoria/${categoriaId}`);
   }
 
-  // --- MÉTODOS DE CATEGORIAS ---
+  // ===================================
+  // --- MÉTODOS DE CATEGORIAS (CORREGIDOS Y COMPLETADOS) ---
+  // ===================================
 
-  //metodo para obtener todas las categorias
+  // Metodo para obtener todas las categorias
   findAllCategorias():Observable<any> {
     return this.http.get(`${this.urlCategorias}/findAll`);
   }
+  
+  // Método para obtener una categoría por ID (AÑADIDO)
+  getCategoriaById(id: number): Observable<any> {
+    return this.http.get(`${this.urlCategorias}/findOne/${id}`);
+  }
 
-  // --- MÉTODOS DE INFO-HOME ---
+  // Método para crear una nueva categoría (AÑADIDO)
+  postCategoria(data: any): Observable<any> {
+    return this.http.post(`${this.urlCategorias}/create`, data);
+  }
+
+  // Método para actualizar una categoría por ID (AÑADIDO)
+  patchCategoria(id: number, data: any): Observable<any> {
+    return this.http.patch(`${this.urlCategorias}/update/${id}`, data);
+  }
+
+  // Método para eliminar una categoría por ID (AÑADIDO)
+  deleteCategoria(id: number): Observable<any> {
+    return this.http.delete(`${this.urlCategorias}/delete/${id}`, { responseType: 'text' as 'json' });
+  }
+
+  // ===================================
+  // --- MÉTODOS DE INFO-HOME (COMPLETADOS) ---
+  // ===================================
 
   // Metodo para obtener toda la info home
   findAllInfoHome(): Observable<any> {
     return this.http.get(`${this.urlInfoHome}/findAll`);
+  }
+  
+  // Método para obtener un registro de Info Home por ID (AÑADIDO)
+  getInfoHomeById(id: number): Observable<any> {
+    return this.http.get(`${this.urlInfoHome}/findOne/${id}`);
   }
   
   //Metodo para actualizar info home
@@ -133,11 +156,28 @@ export class Api { // Renombrado de ServiceAPI a ApiService
     return this.http.patch(`${this.urlInfoHome}/update/${id}`, data);
   }
   
-  // --- MÉTODOS DE USUARIOS ---
+  // Método para crear un registro de Info Home (AÑADIDO)
+  postInfoHome(data: any): Observable<any> {
+    return this.http.post(`${this.urlInfoHome}/create`, data);
+  }
 
-  // Método para obtener todos los usuarios
+  // Método para eliminar un registro de Info Home por ID (AÑADIDO)
+  deleteInfoHome(id: number): Observable<any> {
+    return this.http.delete(`${this.urlInfoHome}/delete/${id}`, { responseType: 'text' as 'json' });
+  }
+
+  // ===================================
+  // --- MÉTODOS DE USUARIOS (CORREGIDOS Y COMPLETADOS) ---
+  // ===================================
+
+  // Método para obtener todos los usuarios (CORREGIDO para ser consistente con /findAll)
   getUsuarios(): Observable<any> {
-    return this.http.get(this.urlUsuario);
+    return this.http.get(`${this.urlUsuario}/findAll`);
+  }
+  
+  // Método para obtener un usuario por ID (AÑADIDO)
+  getUsuarioById(id: number): Observable<any> {
+    return this.http.get(`${this.urlUsuario}/findOne/${id}`);
   }
   
   // Método para obtener un usuario por ID de la experiencia
@@ -148,5 +188,15 @@ export class Api { // Renombrado de ServiceAPI a ApiService
   // metodo para editar usuario
   patchUsuario(id: number, data: any): Observable<any> {
     return this.http.patch(`${this.urlUsuario}/${id}`, data);
+  }
+
+  // Método para crear un nuevo usuario (AÑADIDO)
+  postUsuario(data: any): Observable<any> {
+    return this.http.post(`${this.urlUsuario}/create`, data);
+  }
+  
+  // Método para eliminar un usuario por ID (AÑADIDO)
+  deleteUsuario(id: number): Observable<any> {
+    return this.http.delete(`${this.urlUsuario}/delete/${id}`, { responseType: 'text' as 'json' });
   }
 }

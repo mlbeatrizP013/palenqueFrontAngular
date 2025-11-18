@@ -1,0 +1,94 @@
+<div class="tienda-container">
+  <header class="tienda-header">
+    <div class="logo">
+      <span class="logo-icon">🌟</span>
+      <div class="logo-text">
+        <h1>PALENQUE</h1>
+        <p>Mezcal Artesanal Premium</p>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h2>Nuestra Colección</h2>
+    <p>Mezcales artesanales de la más alta calidad</p>
+  </section>
+
+  <div class="productos-grid">
+    @for (producto of productos(); track producto.id) {
+      <article class="producto-card">
+        <div class="producto-imagen">
+          <img [src]="producto.imagen" [alt]="producto.nombre">
+        </div>
+        
+        <div class="producto-info">
+          <h3>{{ producto.nombre }}</h3>
+          <div class="producto-rating">
+            @for (star of estrellas(producto.rating); track $index) {
+              <span class="star">⭐</span>
+            }
+            <span class="rating-value">{{ producto.rating }}</span>
+          </div>
+          
+          <p class="producto-tipo">{{ producto.descripcion.split('.')[0] }}</p>
+          <p class="producto-descripcion">{{ producto.descripcion }}</p>
+          
+          <div class="producto-detalles">
+            <span class="volumen">{{ producto.volumen }}</span>
+            <span class="origen">{{ producto.origen }}</span>
+          </div>
+          
+          <div class="producto-footer">
+            <span class="precio">${{ producto.precio }}</span>
+            <button class="btn-apartar" (click)="agregarAlCarrito(producto)">
+              + Apartar
+            </button>
+          </div>
+        </div>
+      </article>
+    }
+  </div>
+
+  <section class="info-section">
+    <div class="info-card">
+      <h3>Proceso de Elaboración</h3>
+      <p>Cada botella es el resultado de un proceso cuidadoso que mezcla la tradición con técnicas milenarias de Oaxaca.</p>
+      <ul>
+        <li>Agave espadín 100% silvestre</li>
+        <li>Cocción en horno de tierra</li>
+        <li>Destilación en alambiques de cobre</li>
+        <li>Maduración en barricas de roble</li>
+      </ul>
+    </div>
+    
+    <div class="info-card">
+      <h3>Garantía de Calidad</h3>
+      <p>Todos nuestros mezcales cuentan con certificación de origen y pasan por rigurosos controles de calidad.</p>
+      <ul>
+        <li>Certificación de Mezcal</li>
+        <li>Análisis fisicoquímicos</li>
+        <li>Trazabilidad completa</li>
+        <li>Garantía de satisfacción</li>
+      </ul>
+    </div>
+  </section>
+
+  @if (productoSeleccionado()) {
+    <div class="modal-overlay" (click)="cerrarDetalle()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <button class="btn-cerrar" (click)="cerrarDetalle()">✕</button>
+        <div class="modal-body">
+          <img [src]="productoSeleccionado()!.imagen" [alt]="productoSeleccionado()!.nombre">
+          <div class="modal-info">
+            <h2>{{ productoSeleccionado()!.nombre }}</h2>
+            <p>{{ productoSeleccionado()!.descripcion }}</p>
+            <span class="modal-precio">${{ productoSeleccionado()!.precio }}</span>
+            <button class="btn-apartar-modal" (click)="agregarAlCarrito(productoSeleccionado()!)">
+              Agregar al Carrito
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

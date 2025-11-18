@@ -1,0 +1,44 @@
+:host {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100vh;
+	overflow: hidden;
+}
+
+.tabs {
+	display: flex;
+	gap: 12px;
+	padding: 10px 12px;
+	border-bottom: 1px solid #e5e7eb;
+	background: #fff;
+	flex-shrink: 0;
+	position: sticky;
+	top: 0;
+	z-index: 100;
+}
+
+/* Contenedor del router-outlet debe permitir scroll */
+:host > router-outlet + * {
+	flex: 1;
+	overflow-y: auto;
+	overflow-x: hidden;
+	-webkit-overflow-scrolling: touch;
+	height: calc(100vh - 60px);
+}
+
+.tabs a {
+	padding: 8px 12px;
+	border-radius: 6px;
+	text-decoration: none;
+	color: #374151;
+}
+
+.tabs a:hover {
+	background: #f3f4f6;
+}
+
+.tabs a.active {
+	background: #111827;
+	color: #fff;
+}

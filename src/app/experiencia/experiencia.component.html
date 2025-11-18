@@ -1,0 +1,149 @@
+<div class="experiencias-container">
+  <header class="experiencias-header">
+    <h1>CALENDARIO DE EXPERIENCIAS</h1>
+  </header>
+
+  <!-- Calendario -->
+  <div class="calendario-wrapper">
+    <div class="calendario-header">
+      <button class="nav-btn" (click)="mesAnterior()">‹</button>
+      <h2>{{ getNombreMes() }}</h2>
+      <button class="nav-btn" (click)="mesSiguiente()">›</button>
+    </div>
+
+    <div class="calendario">
+      <!-- Días de la semana -->
+      <div class="dias-semana">
+        @for (dia of diasSemana; track $index) {
+          <div class="dia-semana-header">{{ dia }}</div>
+        }
+      </div>
+
+      <!-- Días del mes -->
+      <div class="dias-grid">
+        @for (dia of diasCalendario(); track dia.fecha.getTime()) {
+          <div 
+            class="dia-celda"
+            [class.otro-mes]="dia.esOtroMes"
+            [class.con-experiencia]="dia.tieneExperiencia"
+            [class.seleccionado]="diaSeleccionado() && mismaFecha(dia.fecha, diaSeleccionado()!)"
+            (click)="seleccionarDia(dia)">
+            <span class="dia-numero">{{ dia.numero }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Lista de próximas experiencias debajo del calendario -->
+  @if (experiencias().length > 0) {
+    <div class="proximas-experiencias">
+      <h3>Próximas Experiencias</h3>
+      <div class="experiencias-lista">
+        @for (exp of experiencias(); track exp.id) {
+          @if (exp.estado) {
+            <article class="experiencia-item">
+              <div class="experiencia-badge">
+                {{ exp.fecha.getDate() }}
+              </div>
+              <div class="experiencia-info">
+                <h4>{{ exp.name }}</h4>
+                <p>{{ exp.description }}</p>
+                <div class="experiencia-meta">
+                  <span class="costo">${{ exp.costo }}</span>
+                  <span class="capacidad">{{ exp.capacidad }} cupos</span>
+                </div>
+              </div>
+            </article>
+          }
+        }
+      </div>
+    </div>
+  }
+
+  <!-- Modal con experiencias del día seleccionado -->
+  @if (mostrarExperienciasDelDia()) {
+    <div class="modal-overlay" (click)="cerrarExperienciasDelDia()">
+      <div class="modal-content experiencias-dia-modal" (click)="$event.stopPropagation()">
+        <button class="btn-cerrar" (click)="cerrarExperienciasDelDia()">✕</button>
+        
+        <h2>Experiencias del {{ diaSeleccionado()?.getDate() }} de {{ getNombreMes().split(' ')[0] }}</h2>
+        
+        <div class="experiencias-del-dia">
+          @for (exp of experienciasDelDia(); track exp.id) {
+            <article class="experiencia-card-modal">
+              <div class="exp-header">
+                <h3>{{ exp.name }}</h3>
+                <span class="exp-costo">${{ exp.costo }}</span>
+              </div>
+              <p class="exp-descripcion">{{ exp.description }}</p>
+              <div class="exp-footer">
+                <span class="exp-capacidad">👥 {{ exp.capacidad }} personas</span>
+                <button 
+                  class="btn-registrar-modal" 
+                  (click)="abrirFormularioAsistencia(exp)"
+                  [disabled]="getCuposDisponibles(exp.id) === 0">
+                  {{ getCuposDisponibles(exp.id) > 0 ? 'Registrarse' : 'Sin cupos' }}
+                </button>
+              </div>
+            </article>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Formulario de aplicación -->
+  @if (mostrarFormularioAsistencia()) {
+    <div class="modal-overlay" (click)="cerrarFormularioAsistencia()">
+      <div class="modal-content formulario-aplicacion" (click)="$event.stopPropagation()">
+        <button class="btn-cerrar" (click)="cerrarFormularioAsistencia()">✕</button>
+        
+        <div class="form-header">
+          @if (experienciaParaAplicar(); as exp) {
+            <div class="exp-badge-large">
+              {{ exp.fecha.getDate() }}
+            </div>
+            <div>
+              <h2>{{ exp.name }}</h2>
+              <p class="form-subtitle">Formulario de Aplicación</p>
+            </div>
+          }
+        </div>
+        
+        <form [formGroup]="formularioAsistencia" (ngSubmit)="confirmarAsistencia()">
+          <div class="form-group">
+            <label for="nombre">Nombre Completo</label>
+            <input 
+              id="nombre"
+              type="text" 
+              formControlName="nombre"
+              placeholder="Ingresa tu nombre completo">
+            @if (formularioAsistencia.get('nombre')?.invalid && formularioAsistencia.get('nombre')?.touched) {
+              <span class="error">El nombre debe tener al menos 3 caracteres</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="edad">Edad</label>
+            <input 
+              id="edad"
+              type="number" 
+              formControlName="edad"
+              placeholder="Tu edad">
+            @if (formularioAsistencia.get('edad')?.invalid && formularioAsistencia.get('edad')?.touched) {
+              <span class="error">Debes ser mayor de 18 años</span>
+            }
+          </div>
+
+          <button 
+            type="submit" 
+            class="btn-confirmar-asistencia"
+            [disabled]="!formularioAsistencia.valid">
+            Confirmar Asistencia
+          </button>
+        </form>
+      </div>
+    </div>
+  }
+</div>

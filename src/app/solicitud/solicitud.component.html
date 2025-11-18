@@ -1,0 +1,87 @@
+<section class="solicitud">
+  @if (!selectedCata) {
+    <h1>Selecciona un día de cata</h1>
+    <div class="cata-grid">
+      @if (catas$ | async; as catas) {
+        @for (c of catas; track c.id) {
+          <article class="cata-card">
+            <header>
+              <h2>{{ c.name }}</h2>
+              <small>{{ c.fecha | date:'medium' }}</small>
+            </header>
+            <p>{{ c.description }}</p>
+            <div class="cata-meta">
+              <span>Capacidad: {{ c.capacidad }}</span>
+              <span>Costo: {{ c.costo | currency:'MXN':'symbol':'1.2-2' }}</span>
+              <span>Estado: {{ c.estado ? 'Activo' : 'Inactivo' }}</span>
+              @if ((c.capacidad ?? 0) <= 0) {
+                <span class="badge warn">Sin lugares</span>
+              }
+            </div>
+            <button
+              type="button"
+              (click)="selectCata(c)"
+              [disabled]="(c.capacidad ?? 0) <= 0 || c.estado === false"
+            >
+              Seleccionar
+            </button>
+          </article>
+        }
+      } @else {
+        <p>Cargando catas...</p>
+      }
+    </div>
+  } @else {
+    <h1>Crear usuario</h1>
+    <div class="cata-resumen">
+      <strong>Día de cata seleccionado:</strong>
+      <span>{{ selectedCata?.name }} — {{ selectedCata?.fecha | date:'medium' }}</span>
+      <button type="button" class="link" (click)="cambiarCata()">Cambiar</button>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+    <div class="field">
+      <label>Nombre</label>
+      <input type="text" formControlName="nome" placeholder="Nombre completo" />
+      @if (form.get('nome')?.touched && form.get('nome')?.invalid) {
+        <small class="error">Nombre requerido (mínimo 2 caracteres)</small>
+      }
+    </div>
+
+    <div class="field">
+      <label>Email</label>
+      <input type="email" formControlName="email" placeholder="correo@dominio.com" />
+      @if (form.get('email')?.touched && form.get('email')?.invalid) {
+        <small class="error">Email inválido</small>
+      }
+    </div>
+
+    <div class="field">
+      <label>Teléfono</label>
+      <input type="tel" formControlName="telefono" placeholder="10 dígitos" />
+      @if (form.get('telefono')?.touched && form.get('telefono')?.invalid) {
+        <small class="error">Teléfono de 10 dígitos</small>
+      }
+    </div>
+
+    <div class="field">
+      <label>Género</label>
+      <select formControlName="genero">
+        <option value="masculino">Masculino</option>
+        <option value="femenino">Femenino</option>
+        <option value="otro">Otro</option>
+      </select>
+    </div>
+
+      <!-- El control Idcata se llena al seleccionar la cata; no mostramos el select -->
+      @if (form.get('Idcata')?.invalid) {
+        <small class="error">Selecciona un día de cata</small>
+      }
+
+    <button type="submit" [disabled]="loading || form.invalid">Guardar</button>
+    </form>
+
+    @if (successMsg) { <p class="success">{{ successMsg }}</p> }
+    @if (errorMsg) { <p class="error">{{ errorMsg }}</p> }
+  }
+</section>

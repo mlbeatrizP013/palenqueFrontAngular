@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { switchMap, catchError, finalize } from 'rxjs/operators';
 import { ServiceAPI } from '../services/service-api';
@@ -10,7 +11,7 @@ import { ServiceAPI } from '../services/service-api';
   templateUrl: './solicitud.component.html',
   styleUrls: ['./solicitud.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
 })
 export class SolicitudComponent  implements OnInit {
   form!: FormGroup;
@@ -20,7 +21,7 @@ export class SolicitudComponent  implements OnInit {
   errorMsg = '';
   selectedCata: any | null = null;
 
-  constructor(private fb: FormBuilder, private api: ServiceAPI) { }
+  constructor(private fb: FormBuilder, private api: ServiceAPI, private router: Router) { }
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -45,8 +46,11 @@ export class SolicitudComponent  implements OnInit {
   }
 
   cambiarCata() {
-    this.selectedCata = null;
-    this.form.patchValue({ Idcata: null });
+    this.router.navigate(['/tabs/experiencia']);
+  }
+
+  volverAExperiencias() {
+    this.router.navigate(['/tabs/experiencia']);
   }
 
   submit() {

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, signal, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ServiceAPI } from '../services/service-api';
 
 interface Asistente {
@@ -43,6 +44,7 @@ interface DiaCalendario {
 export class ExperienciaComponent implements OnInit {
   private api = inject(ServiceAPI);
   private fb = inject(FormBuilder);
+  private router = inject(Router);
 
   experiencias = signal<Experiencia[]>([]);
   asistentes = signal<Asistente[]>([]);
@@ -248,9 +250,15 @@ export class ExperienciaComponent implements OnInit {
 
   seleccionarDia(dia: DiaCalendario): void {
     if (dia.tieneExperiencia && !dia.esOtroMes) {
-      this.diaSeleccionado.set(dia.fecha);
-      this.experienciasDelDia.set(dia.experiencias);
-      this.mostrarExperienciasDelDia.set(true);
+      // Si solo hay una experiencia ese día, redirigir directamente
+      if (dia.experiencias.length === 1) {
+        this.abrirFormularioAsistencia(dia.experiencias[0]);
+      } else {
+        // Si hay múltiples experiencias, mostrar el modal
+        this.diaSeleccionado.set(dia.fecha);
+        this.experienciasDelDia.set(dia.experiencias);
+        this.mostrarExperienciasDelDia.set(true);
+      }
     }
   }
 
@@ -259,8 +267,10 @@ export class ExperienciaComponent implements OnInit {
   }
 
   abrirFormularioAsistencia(experiencia: Experiencia): void {
+    // Guardamos la experiencia seleccionada (opcional, para uso futuro)
     this.experienciaParaAplicar.set(experiencia);
-    this.mostrarFormularioAsistencia.set(true);
+    // Redirigimos al componente de solicitudes
+    this.router.navigate(['/tabs/solicitudes']);
   }
 
   cerrarFormularioAsistencia(): void {

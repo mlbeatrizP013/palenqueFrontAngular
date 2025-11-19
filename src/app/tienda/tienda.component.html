@@ -1,7 +1,7 @@
 <div class="tienda-container">
   <header class="tienda-header">
     <div class="logo">
-      <span class="logo-icon">🌟</span>
+      <img src="assets/logo/logo.jpg" alt="Palenque Logo" class="logo-icon" />
       <div class="logo-text">
         <h1>PALENQUE</h1>
         <p>Mezcal Artesanal Premium</p>
@@ -14,81 +14,57 @@
     <p>Mezcales artesanales de la más alta calidad</p>
   </section>
 
-  <div class="productos-grid">
-    @for (producto of productos(); track producto.id) {
-      <article class="producto-card">
-        <div class="producto-imagen">
-          <img [src]="producto.imagen" [alt]="producto.nombre">
-        </div>
-        
-        <div class="producto-info">
-          <h3>{{ producto.nombre }}</h3>
-          <div class="producto-rating">
-            @for (star of estrellas(producto.rating); track $index) {
-              <span class="star">⭐</span>
-            }
-            <span class="rating-value">{{ producto.rating }}</span>
-          </div>
-          
-          <p class="producto-tipo">{{ producto.descripcion.split('.')[0] }}</p>
-          <p class="producto-descripcion">{{ producto.descripcion }}</p>
-          
-          <div class="producto-detalles">
-            <span class="volumen">{{ producto.volumen }}</span>
-            <span class="origen">{{ producto.origen }}</span>
-          </div>
-          
-          <div class="producto-footer">
-            <span class="precio">${{ producto.precio }}</span>
-            <button class="btn-apartar" (click)="agregarAlCarrito(producto)">
-              + Apartar
+  <!-- Sección de apartado con usuario -->
+  <section class="controls">
+  <label>
+    Usuario:
+    @if (usuarios$ | async; as usuarios) {
+      <select [ngModel]="selectedUserId" (ngModelChange)="onSelectUser($event)">
+        <option [ngValue]="null">Selecciona un usuario</option>
+        @for (u of usuarios; track u.id) {
+          <option [ngValue]="u.id">{{ u.nome }}</option>
+        }
+      </select>
+    } @else {
+      <span>Cargando usuarios...</span>
+    }
+  </label>
+</section>
+
+@if (bebidas$ | async; as bebidas) {
+  @if (bebidas.length > 0) {
+    @for (b of bebidas; track b.id) {
+      <article class="bebida-card">
+        <header class="bebida-header">
+          <h2>{{ b.nombre }}</h2>
+          <span class="categoria">{{ b.categoria.nombre }}</span>
+        </header>
+
+        <div class="bebida-body">
+          <img *ngIf="b.imagen" [src]="b.imagen" alt="{{ b.nombre }}" class="bebida-imagen" />
+          <div class="bebida-info">
+            <p class="descripcion">{{ b.descripcion }}</p>
+            <p class="precio"><strong>Precio:</strong> {{ b.precio | currency:'MXN':'symbol':'1.2-2' }}</p>
+
+            <div class="qty-controls">
+              <button type="button" (click)="dec(b)">-</button>
+              <span class="qty">{{ qty[b.id] || 0 }}</span>
+              <button type="button" (click)="inc(b)" [disabled]="displayedStock(b) <= 0">+</button>
+            </div>
+
+            <p class="stock"><strong>Stock restante:</strong> {{ displayedStock(b) }}</p>
+
+            <button type="button" class="apartar" (click)="apartar(b)" [disabled]="!canApartar(b)">
+              Apartar
             </button>
           </div>
         </div>
       </article>
     }
-  </div>
-
-  <section class="info-section">
-    <div class="info-card">
-      <h3>Proceso de Elaboración</h3>
-      <p>Cada botella es el resultado de un proceso cuidadoso que mezcla la tradición con técnicas milenarias de Oaxaca.</p>
-      <ul>
-        <li>Agave espadín 100% silvestre</li>
-        <li>Cocción en horno de tierra</li>
-        <li>Destilación en alambiques de cobre</li>
-        <li>Maduración en barricas de roble</li>
-      </ul>
-    </div>
-    
-    <div class="info-card">
-      <h3>Garantía de Calidad</h3>
-      <p>Todos nuestros mezcales cuentan con certificación de origen y pasan por rigurosos controles de calidad.</p>
-      <ul>
-        <li>Certificación de Mezcal</li>
-        <li>Análisis fisicoquímicos</li>
-        <li>Trazabilidad completa</li>
-        <li>Garantía de satisfacción</li>
-      </ul>
-    </div>
-  </section>
-
-  @if (productoSeleccionado()) {
-    <div class="modal-overlay" (click)="cerrarDetalle()">
-      <div class="modal-content" (click)="$event.stopPropagation()">
-        <button class="btn-cerrar" (click)="cerrarDetalle()">✕</button>
-        <div class="modal-body">
-          <img [src]="productoSeleccionado()!.imagen" [alt]="productoSeleccionado()!.nombre">
-          <div class="modal-info">
-            <h2>{{ productoSeleccionado()!.nombre }}</h2>
-            <p>{{ productoSeleccionado()!.descripcion }}</p>
-            <span class="modal-precio">${{ productoSeleccionado()!.precio }}</span>
-            <button class="btn-apartar-modal" (click)="agregarAlCarrito(productoSeleccionado()!)">
-              Agregar al Carrito
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+  } @else {
+    <p>No hay bebidas disponibles.</p>
   }
-</div>
+} @else {
+  <p>Cargando bebidas...</p>
+}
+  </div>

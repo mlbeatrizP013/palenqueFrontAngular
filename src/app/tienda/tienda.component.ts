@@ -1,7 +1,23 @@
 import { Component, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { ServiceAPI } from '../services/service-api';
+
+interface Usuario {
+  id: number;
+  nome: string;
+}
+
+interface Bebida {
+  id: number;
+  nombre: string;
+  descripcion: string;
+  precio: number;
+  stock: number;
+  imagen: string;
+  categoria: { id: number; nombre: string };
+}
 
 interface Producto {
   id: number;
@@ -22,16 +38,69 @@ interface Producto {
   styleUrls: ['./tienda.component.scss']
 })
 export class TiendaComponent implements OnInit {
+  // Propiedades para bebidas (apartado)
+  bebidas$!: Observable<Bebida[]>;
+  usuarios$!: Observable<Usuario[]>;
+  selectedUserId: number | null = null;
+  qty: Record<number, number> = {};
+  
+  // Propiedades para productos (catálogo)
   productos = signal<Producto[]>([]);
   productoSeleccionado = signal<Producto | null>(null);
   cantidadCarrito = signal(0);
 
-  constructor(private api: ServiceAPI) {}
+  constructor(private api: ServiceAPI) { }
 
   ngOnInit() {
-    this.cargarProductos();
+    this.bebidas$ = this.api.findAllBebidas();
+    this.usuarios$ = this.api.getUsuarios();
   }
 
+  onSelectUser(idStr: string) {
+    const id = Number(idStr);
+    this.selectedUserId = Number.isFinite(id) ? id : null;
+  }
+
+  displayedStock(b: Bebida): number {
+    return b.stock - (this.qty[b.id] || 0);
+  }
+
+  inc(b: Bebida) {
+    const current = this.qty[b.id] || 0;
+    if (current < b.stock) this.qty[b.id] = current + 1;
+  }
+
+  dec(b: Bebida) {
+    const current = this.qty[b.id] || 0;
+    if (current > 0) this.qty[b.id] = current - 1;
+  }
+
+  canApartar(b: Bebida): boolean {
+    return !!this.selectedUserId && (this.qty[b.id] || 0) > 0;
+  }
+
+  apartar(b: Bebida) {
+    const cantidad = this.qty[b.id] || 0;
+    if (!this.selectedUserId || cantidad <= 0) return;
+    const payload = {
+      cantidad,
+      usuarioID: this.selectedUserId,
+      bebidasID: b.id,
+    };
+    this.api.createApartado(payload).subscribe({
+      next: () => {
+        const nuevoStock = b.stock - cantidad;
+        this.api.patchBebida(b.id, { stock: nuevoStock }).subscribe({
+          next: () => {
+            this.bebidas$ = this.api.findAllBebidas();
+            this.qty[b.id] = 0;
+          }
+        });
+      }
+    });
+  }
+
+  // Métodos para productos
   cargarProductos(): void {
     this.api.findAllBebidas().subscribe({
       next: (bebidas: any[]) => {
@@ -49,45 +118,8 @@ export class TiendaComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error cargando productos:', err);
-        // Cargar productos por defecto en caso de error
-        this.cargarProductosDefecto();
       }
     });
-  }
-
-  cargarProductosDefecto(): void {
-    this.productos.set([
-      {
-        id: 1,
-        nombre: 'PALENQUE Joven',
-        precio: 1200,
-        descripcion: 'Mezcal joven con notas herbales y un suave ahumado. Destilado artesanalmente en alambiques de cobre.',
-        volumen: '40% Vol.',
-        origen: 'Oaxaca',
-        imagen: 'assets/productos/joven.jpg',
-        rating: 4.8
-      },
-      {
-        id: 2,
-        nombre: 'PALENQUE Reposado',
-        precio: 1650,
-        descripcion: 'Reposado en barricas de roble americano por 8 meses. Sabor complejo con notas de vainilla y caramelo.',
-        volumen: '42% Vol.',
-        origen: 'Oaxaca',
-        imagen: 'assets/productos/reposado.jpg',
-        rating: 4.9
-      },
-      {
-        id: 3,
-        nombre: 'PALENQUE Ancestral',
-        precio: 2400,
-        descripcion: 'Destilado con técnicas prehispánicas en ollas de barro. Edición limitada de nuestra maestra artesanal.',
-        volumen: '45% Vol.',
-        origen: 'Oaxaca',
-        imagen: 'assets/productos/ancestral.jpg',
-        rating: 5
-      }
-    ]);
   }
 
   abrirDetalle(producto: Producto): void {

@@ -148,6 +148,32 @@
   font-weight: 600;
 }
 
+.experiencias-lista-scroll {
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 0.5rem;
+}
+
+.experiencias-lista-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.experiencias-lista-scroll::-webkit-scrollbar-track {
+  background: #e8dcc8;
+  border-radius: 10px;
+}
+
+.experiencias-lista-scroll::-webkit-scrollbar-thumb {
+  background: #D97638;
+  border-radius: 10px;
+}
+
+.experiencias-lista-scroll::-webkit-scrollbar-thumb:hover {
+  background: #C55A11;
+}
+
 .experiencias-lista {
   display: flex;
   flex-direction: column;

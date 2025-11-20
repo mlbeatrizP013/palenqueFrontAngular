@@ -1,7 +1,7 @@
 <div class="tienda-container">
   <header class="tienda-header">
     <div class="logo">
-      <img src="assets/logo/logo.jpg" alt="Palenque Logo" class="logo-icon" />
+      <!--img src="assets/logo/logo.jpg" alt="Palenque Logo" class="logo-icon" -->
       <div class="logo-text">
         <h1>PALENQUE</h1>
         <p>Mezcal Artesanal Premium</p>
@@ -31,40 +31,42 @@
   </label>
 </section>
 
-@if (bebidas$ | async; as bebidas) {
-  @if (bebidas.length > 0) {
-    @for (b of bebidas; track b.id) {
-      <article class="bebida-card">
-        <header class="bebida-header">
-          <h2>{{ b.nombre }}</h2>
-          <span class="categoria">{{ b.categoria.nombre }}</span>
-        </header>
+<div class="bebidas-scroll-container">
+  @if (bebidas$ | async; as bebidas) {
+    @if (bebidas.length > 0) {
+      @for (b of bebidas; track b.id) {
+        <article class="bebida-card">
+          <header class="bebida-header">
+            <h2>{{ b.nombre }}</h2>
+            <span class="categoria">{{ b.categoria.nombre }}</span>
+          </header>
 
-        <div class="bebida-body">
-          <img *ngIf="b.imagen" [src]="b.imagen" alt="{{ b.nombre }}" class="bebida-imagen" />
-          <div class="bebida-info">
-            <p class="descripcion">{{ b.descripcion }}</p>
-            <p class="precio"><strong>Precio:</strong> {{ b.precio | currency:'MXN':'symbol':'1.2-2' }}</p>
+          <div class="bebida-body">
+            <img *ngIf="b.imagen" [src]="b.imagen" alt="{{ b.nombre }}" class="bebida-imagen" />
+            <div class="bebida-info">
+              <p class="descripcion">{{ b.descripcion }}</p>
+              <p class="precio"><strong>Precio:</strong> {{ b.precio | currency:'MXN':'symbol':'1.2-2' }}</p>
 
-            <div class="qty-controls">
-              <button type="button" (click)="dec(b)">-</button>
-              <span class="qty">{{ qty[b.id] || 0 }}</span>
-              <button type="button" (click)="inc(b)" [disabled]="displayedStock(b) <= 0">+</button>
+              <div class="qty-controls">
+                <button type="button" (click)="dec(b)">-</button>
+                <span class="qty">{{ qty[b.id] || 0 }}</span>
+                <button type="button" (click)="inc(b)" [disabled]="displayedStock(b) <= 0">+</button>
+              </div>
+
+              <p class="stock"><strong>Stock restante:</strong> {{ displayedStock(b) }}</p>
+
+              <button type="button" class="apartar" (click)="apartar(b)" [disabled]="!canApartar(b)">
+                Apartar
+              </button>
             </div>
-
-            <p class="stock"><strong>Stock restante:</strong> {{ displayedStock(b) }}</p>
-
-            <button type="button" class="apartar" (click)="apartar(b)" [disabled]="!canApartar(b)">
-              Apartar
-            </button>
           </div>
-        </div>
-      </article>
+        </article>
+      }
+    } @else {
+      <p>No hay bebidas disponibles.</p>
     }
   } @else {
-    <p>No hay bebidas disponibles.</p>
+    <p>Cargando bebidas...</p>
   }
-} @else {
-  <p>Cargando bebidas...</p>
-}
+</div>
   </div>

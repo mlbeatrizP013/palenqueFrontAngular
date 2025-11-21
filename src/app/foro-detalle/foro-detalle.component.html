@@ -1,0 +1,9 @@
+<button routerLink="/foro">⬅ Regresar</button>
+
+@if (loading) {
+  <p>Cargando...</p>
+} @else {
+  <h2>{{ post.title }}</h2>
+  <small>{{ post.published | date }}</small>
+  <div [innerHTML]="post.content"></div>
+}

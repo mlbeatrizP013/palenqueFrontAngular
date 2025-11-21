@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { ForoComponent } from './foro/foro.component';
 import { TiendaComponent } from './tienda/tienda.component';
 import { SolicitudComponent } from './solicitud/solicitud.component';
+import { ForoDetalleComponent } from './foro-detalle/foro-detalle.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'tabs', pathMatch: 'full' },
@@ -15,6 +16,8 @@ export const routes: Routes = [
       { path: 'foro', component: ForoComponent },
       { path: 'tienda', component: TiendaComponent },
       { path: 'solicitudes',component: SolicitudComponent },
+      { path: 'foro',component: ForoComponent },
+      { path: 'foro/:id',component: ForoDetalleComponent },
       { path: '', redirectTo: 'home', pathMatch: 'full' },
     ],
   },

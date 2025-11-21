@@ -1,8 +1,22 @@
-<nav class="tabs">
+<!-- <nav class="tabs">
   <a routerLink="/tabs/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
   <a routerLink="/tabs/foro" routerLinkActive="active">Foro</a>
   <a routerLink="/tabs/tienda" routerLinkActive="active">Tienda</a>
   <a routerLink="/tabs/solicitudes" routerLinkActive="active">Solicitudes</a>
 </nav>
 
-<router-outlet></router-outlet>
+<router-outlet></router-outlet> -->
+
+<div class="app-layout">
+  
+  <app-sidebar></app-sidebar>
+  
+  <div class="main-content">
+    
+    
+    <main>
+      <router-outlet></router-outlet>
+    </main>
+    
+  </div>
+</div>

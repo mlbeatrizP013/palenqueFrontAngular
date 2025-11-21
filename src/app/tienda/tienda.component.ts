@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ServiceAPI } from '../services/service-api';
+
 interface Usuario {
   id: number;
   nome: string;
@@ -14,22 +15,39 @@ interface Bebida {
   descripcion: string;
   precio: number;
   stock: number;
-  imagen: string; // data URL o base64 con prefijo
+  imagen: string;
   categoria: { id: number; nombre: string };
+}
+
+interface Producto {
+  id: number;
+  nombre: string;
+  precio: number;
+  descripcion: string;
+  volumen: string;
+  origen: string;
+  imagen: string;
+  rating: number;
 }
 
 @Component({
   selector: 'app-tienda',
-  templateUrl: './tienda.component.html',
-  styleUrls: ['./tienda.component.scss'],
   standalone: true,
   imports: [CommonModule, FormsModule],
+  templateUrl: './tienda.component.html',
+  styleUrls: ['./tienda.component.scss']
 })
-export class TiendaComponent  implements OnInit {
+export class TiendaComponent implements OnInit {
+  // Propiedades para bebidas (apartado)
   bebidas$!: Observable<Bebida[]>;
   usuarios$!: Observable<Usuario[]>;
   selectedUserId: number | null = null;
   qty: Record<number, number> = {};
+  
+  // Propiedades para productos (catálogo)
+  productos = signal<Producto[]>([]);
+  productoSeleccionado = signal<Producto | null>(null);
+  cantidadCarrito = signal(0);
 
   constructor(private api: ServiceAPI) { }
 
@@ -82,4 +100,42 @@ export class TiendaComponent  implements OnInit {
     });
   }
 
+  // Métodos para productos
+  cargarProductos(): void {
+    this.api.findAllBebidas().subscribe({
+      next: (bebidas: any[]) => {
+        const productosFormateados = bebidas.map(b => ({
+          id: b.id,
+          nombre: b.nombre,
+          precio: b.precio,
+          descripcion: b.descripcion || 'Mezcal artesanal de alta calidad',
+          volumen: '40% Vol.',
+          origen: 'Oaxaca',
+          imagen: b.imagen || 'assets/productos/default.jpg',
+          rating: 4.8
+        }));
+        this.productos.set(productosFormateados);
+      },
+      error: (err) => {
+        console.error('Error cargando productos:', err);
+      }
+    });
+  }
+
+  abrirDetalle(producto: Producto): void {
+    this.productoSeleccionado.set(producto);
+  }
+
+  cerrarDetalle(): void {
+    this.productoSeleccionado.set(null);
+  }
+
+  agregarAlCarrito(producto: Producto): void {
+    this.cantidadCarrito.update(cant => cant + 1);
+    console.log(`Agregado ${producto.nombre} al carrito`);
+  }
+
+  estrellas(rating: number): number[] {
+    return Array(Math.floor(rating)).fill(0);
+  }
 }

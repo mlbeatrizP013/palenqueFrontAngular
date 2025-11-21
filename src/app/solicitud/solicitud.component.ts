@@ -21,7 +21,14 @@ export class SolicitudComponent  implements OnInit {
   errorMsg = '';
   selectedCata: any | null = null;
 
-  constructor(private fb: FormBuilder, private api: ServiceAPI, private router: Router) { }
+  constructor(private fb: FormBuilder, private api: ServiceAPI, private router: Router) {
+    // Verificar si hay una experiencia seleccionada en el estado de navegación
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras?.state as { experienciaSeleccionada?: any };
+    if (state?.experienciaSeleccionada) {
+      this.selectedCata = state.experienciaSeleccionada;
+    }
+  }
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -32,6 +39,11 @@ export class SolicitudComponent  implements OnInit {
       Idcata: [null, [Validators.required]],
     });
     this.catas$ = this.api.findAll();
+    
+    // Si hay una experiencia pre-seleccionada, cargarla en el formulario
+    if (this.selectedCata) {
+      this.form.patchValue({ Idcata: this.selectedCata.id });
+    }
   }
 
   selectCata(cata: any) {

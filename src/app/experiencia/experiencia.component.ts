@@ -54,9 +54,19 @@ export class ExperienciaComponent implements OnInit {
   // Calendario
   mesActual = signal(new Date());
   diasCalendario = computed(() => this.generarCalendario());
-  experienciasDelDia = signal<Experiencia[]>([]);
-  mostrarExperienciasDelDia = signal(false);
+  experienciaSeleccionada = signal<Experiencia | null>(null);
+  mostrarCardExperiencia = signal(false);
   diaSeleccionado = signal<Date | null>(null);
+  
+  // Computed para filtrar experiencias del mes actual
+  experienciasDelMes = computed(() => {
+    const mes = this.mesActual();
+    return this.experiencias().filter(exp => 
+      exp.fecha.getMonth() === mes.getMonth() && 
+      exp.fecha.getFullYear() === mes.getFullYear() &&
+      exp.estado
+    );
+  });
   
   diasSemana = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
 
@@ -250,32 +260,35 @@ export class ExperienciaComponent implements OnInit {
 
   seleccionarDia(dia: DiaCalendario): void {
     if (dia.tieneExperiencia && !dia.esOtroMes) {
-      // Si solo hay una experiencia ese día, redirigir directamente
-      if (dia.experiencias.length === 1) {
-        this.abrirFormularioAsistencia(dia.experiencias[0]);
-      } else {
-        // Si hay múltiples experiencias, mostrar el modal
-        this.diaSeleccionado.set(dia.fecha);
-        this.experienciasDelDia.set(dia.experiencias);
-        this.mostrarExperienciasDelDia.set(true);
+      this.diaSeleccionado.set(dia.fecha);
+      // Mostrar solo la primera experiencia del día
+      if (dia.experiencias.length > 0) {
+        this.experienciaSeleccionada.set(dia.experiencias[0]);
+        this.mostrarCardExperiencia.set(true);
       }
     }
   }
 
-  cerrarExperienciasDelDia(): void {
-    this.mostrarExperienciasDelDia.set(false);
+  cerrarCardExperiencia(): void {
+    this.mostrarCardExperiencia.set(false);
+    this.experienciaSeleccionada.set(null);
   }
 
   abrirFormularioAsistencia(experiencia: Experiencia): void {
     // Guardamos la experiencia seleccionada (opcional, para uso futuro)
     this.experienciaParaAplicar.set(experiencia);
-    // Redirigimos al componente de solicitudes
-    this.router.navigate(['/tabs/solicitudes']);
+    // Cerramos la card si está abierta
+    this.cerrarCardExperiencia();
+    // Redirigimos al componente de solicitudes con el estado de la experiencia
+    this.router.navigate(['/tabs/solicitudes'], {
+      state: { experienciaSeleccionada: experiencia }
+    });
   }
 
   cerrarFormularioAsistencia(): void {
     this.mostrarFormularioAsistencia.set(false);
     this.formularioAsistencia.reset();
+    this.cerrarCardExperiencia();
   }
 
   confirmarAsistencia(): void {
@@ -297,7 +310,7 @@ export class ExperienciaComponent implements OnInit {
       
       this.asistentes.update(lista => [...lista, nuevoAsistente]);
       this.cerrarFormularioAsistencia();
-      this.cerrarExperienciasDelDia();
+      this.cerrarCardExperiencia();
       alert(`¡Registro exitoso para ${experiencia.name}!`);
       console.log('Asistencia confirmada:', nuevoAsistente);
     }

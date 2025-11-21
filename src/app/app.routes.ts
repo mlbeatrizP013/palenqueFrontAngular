@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { ForoComponent } from './foro/foro.component';
 import { TiendaComponent } from './tienda/tienda.component';
 import { SolicitudComponent } from './solicitud/solicitud.component';
+import { ExperienciaComponent } from './experiencias/experiencias.component';
 // IMPORTANTE: Importa aquí tus componentes de Experiencias y Visita si ya los creaste
 // import { ExperienciasComponent } from './experiencias/experiencias.component';
 // import { VisitaComponent } from './visita/visita.component';
@@ -36,7 +37,7 @@ export const routes: Routes = [
       },
       {
         path: 'experiencias',
-        component: HomeComponent // <--- CAMBIAR por ExperienciasComponent cuando lo tengas
+        component: ExperienciaComponent // <--- CAMBIAR por ExperienciasComponent cuando lo tengas
       },
       {
         path: 'visita-personalizada',

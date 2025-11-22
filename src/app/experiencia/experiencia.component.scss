@@ -1,8 +1,8 @@
 :host {
   display: block;
   width: 100%;
-  height: 100%;
-  overflow-y: auto;
+  height: 100vh;      /* CAMBIO 1: 100vh asegura que ocupe la pantalla visible */
+  overflow-y: auto;   /* CAMBIO 2: Activa el scroll vertical en todo el componente */
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
 }
@@ -12,8 +12,10 @@
   height: auto;
   background: linear-gradient(135deg, #f5f1e8 0%, #e8dcc8 100%);
   padding: 0;
-  padding-bottom: 4rem;
+  padding-bottom: 6rem; /* CAMBIO EXTRA: Un poco más de espacio abajo para que no se corte */
 }
+
+/* --- DE AQUÍ PARA ABAJO ES TU CÓDIGO ORIGINAL EXACTO --- */
 
 .experiencias-header {
   text-align: center;
@@ -312,7 +314,6 @@
 }
 
 /* Modal de experiencias del día */
-/* Card de experiencia del día seleccionado */
 .card-experiencia-dia {
   background: white;
   border-radius: 20px;

@@ -1,11 +1,14 @@
-// Importar fuentes si no están en styles.scss global
+// Importar fuentes
 // @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap');
 
 :host {
   display: block;
   width: 100%;
-  min-height: 100%;
-  background-color: #FAFAFA;
+  /* CAMBIO CLAVE AQUÍ PARA EL SCROLL: */
+  height: 100vh;      /* Ocupa exactamente el alto de la ventana */
+  overflow-y: auto;   /* Activa el scroll vertical si el contenido es largo */
+  overflow-x: hidden; /* Evita scroll horizontal */
+  background: linear-gradient(135deg, #f5f1e8 0%, #e8dcc8 100%);
   font-family: 'Lato', sans-serif;
   
   --primary-brown: #4E3629;
@@ -15,15 +18,16 @@
 }
 
 .dashboard-container {
-  max-width: 1400px; /* Evita que se estire demasiado en monitores gigantes */
+  max-width: 1400px; 
   margin: 0 auto;
-  padding: 20px 24px 40px 24px;
+  /* Agregamos padding extra abajo para asegurar que se vea el footer al hacer scroll */
+  padding: 20px 24px 80px 24px; 
 }
 
 /* --- TOP SUB NAV --- */
 .top-sub-nav {
   display: flex;
-  justify-content: center; /* Centrado en desktop */
+  justify-content: center;
   gap: 30px;
   margin-bottom: 40px;
   padding-top: 10px;
@@ -38,7 +42,7 @@
     &:hover { color: var(--primary-brown); }
     
     &.active-tab {
-      color: #2E7D32; /* Verde */
+      color: #2E7D32;
       font-weight: 700;
       background: #E8F5E9;
       padding: 6px 16px;
@@ -58,7 +62,7 @@
     color: var(--primary-brown);
     margin: 0 0 16px 0;
     
-    span { font-weight: 400; } /* La segunda palabra más delgada */
+    span { font-weight: 400; }
   }
 
   .description {
@@ -70,17 +74,17 @@
   }
 }
 
-/* --- STATS ROW (RESPONSIVE) --- */
+/* --- STATS ROW --- */
 .stats-row {
   display: flex;
-  flex-wrap: wrap; /* Permite que bajen de línea en móvil */
+  flex-wrap: wrap;
   justify-content: center;
   gap: 40px;
   padding: 0 20px;
 
   .stat-item {
     text-align: center;
-    min-width: 100px; /* Ancho mínimo para que no se aplasten */
+    min-width: 100px;
 
     .number {
       display: block;
@@ -100,10 +104,9 @@
   }
 }
 
-/* --- CARDS GRID (RESPONSIVE MAGIC) --- */
+/* --- CARDS GRID --- */
 .cards-grid {
   display: grid;
-  /* Esto crea columnas automáticas: mínimo 260px, máximo 1 fracción */
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 24px;
   margin-bottom: 40px;
@@ -117,7 +120,7 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
-    height: 100%; /* Altura igual para todas */
+    height: 100%;
 
     &:hover {
       transform: translateY(-5px);
@@ -140,7 +143,7 @@
         position: absolute;
         top: 12px;
         left: 12px;
-        background-color: #D84315; /* Naranja quemado por defecto */
+        background-color: #D84315;
         color: white;
         padding: 4px 12px;
         border-radius: 20px;
@@ -171,7 +174,6 @@
         color: var(--text-muted);
         line-height: 1.5;
         margin: 0;
-        /* Truncado de texto elegante */
         display: -webkit-box;
         -webkit-line-clamp: 4;
         -webkit-box-orient: vertical;
@@ -181,18 +183,10 @@
   }
 }
 
-/* --- FOOTER --- */
-.page-footer {
-  text-align: center;
-  color: #aaa;
-  font-size: 0.85rem;
-  border-top: 1px solid #eee;
-  padding-top: 20px;
-}
-
 /* --- LOADING & EMPTY STATES --- */
 .loading-state, .empty-state {
-  height: 100vh;
+  height: 100%; /* Cambiado a 100% para respetar el contenedor con scroll */
+  min-height: 500px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -200,10 +194,69 @@
   color: var(--text-muted);
 }
 
-/* --- MEDIA QUERIES (AJUSTES MÓVILES) --- */
+/* --- SECCIÓN CONTACTO (Tu nuevo código) --- */
+.contact-info-panel {
+  background-color: #FFFDE7;
+  border: 1px solid #FBC02D;
+  border-radius: 16px;
+  padding: 30px;
+  margin-top: 40px;
+  box-shadow: 0 4px 20px rgba(251, 192, 45, 0.15);
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    color: #5D4037;
+    font-size: 1.4rem;
+    margin-top: 0;
+    margin-bottom: 24px;
+    border-bottom: 1px solid rgba(251, 192, 45, 0.3);
+    padding-bottom: 15px;
+    width: 100%;
+  }
+
+  .contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: #4E342E;
+    font-size: 1rem;
+    
+    .icon-box {
+      color: #D84315;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      
+      svg {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    span {
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+
+    &:hover {
+      span { color: #D84315; transition: color 0.3s; }
+    }
+  }
+}
+
+/* --- MEDIA QUERIES --- */
 @media (max-width: 768px) {
   .dashboard-container {
     padding: 16px;
+    padding-bottom: 60px; /* Espacio para scroll en móvil */
   }
 
   .hero-header {
@@ -212,15 +265,22 @@
   }
 
   .stats-row {
-    gap: 20px 30px; /* Menos espacio horizontal, espacio vertical */
-    
+    gap: 20px 30px;
     .stat-item {
-      width: 45%; /* En móvil, los stats se ponen en cuadrícula de 2 */
+      width: 45%;
     }
   }
   
   .top-sub-nav {
-    justify-content: space-between; /* Esparcir links en móvil */
+    justify-content: space-between;
     font-size: 0.8rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .contact-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
   }
 }

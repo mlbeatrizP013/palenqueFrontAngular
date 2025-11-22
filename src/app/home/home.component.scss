@@ -1,30 +1,226 @@
+// Importar fuentes si no están en styles.scss global
+// @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400;700&display=swap');
+
 :host {
-    display: block;
-    height: 100vh;        /* ocupa toda la pantalla */
-    overflow-y: auto;     /* activa scroll vertical */
-    padding: 16px;        /* separa el contenido */
-    box-sizing: border-box;
-  }
+  display: block;
+  width: 100%;
+  min-height: 100%;
+  background-color: #FAFAFA;
+  font-family: 'Lato', sans-serif;
   
-  .info-card {
-    background: #fff;
+  --primary-brown: #4E3629;
+  --accent-gold: #C67C4E;
+  --text-dark: #2C2C2C;
+  --text-muted: #666;
+}
+
+.dashboard-container {
+  max-width: 1400px; /* Evita que se estire demasiado en monitores gigantes */
+  margin: 0 auto;
+  padding: 20px 24px 40px 24px;
+}
+
+/* --- TOP SUB NAV --- */
+.top-sub-nav {
+  display: flex;
+  justify-content: center; /* Centrado en desktop */
+  gap: 30px;
+  margin-bottom: 40px;
+  padding-top: 10px;
+
+  a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.3s;
+
+    &:hover { color: var(--primary-brown); }
+    
+    &.active-tab {
+      color: #2E7D32; /* Verde */
+      font-weight: 700;
+      background: #E8F5E9;
+      padding: 6px 16px;
+      border-radius: 20px;
+    }
+  }
+}
+
+/* --- HERO SECTION --- */
+.hero-header {
+  text-align: center;
+  margin-bottom: 50px;
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--primary-brown);
+    margin: 0 0 16px 0;
+    
+    span { font-weight: 400; } /* La segunda palabra más delgada */
+  }
+
+  .description {
+    max-width: 700px;
+    margin: 0 auto 40px auto;
+    color: var(--accent-gold);
+    line-height: 1.6;
+    font-size: 1.1rem;
+  }
+}
+
+/* --- STATS ROW (RESPONSIVE) --- */
+.stats-row {
+  display: flex;
+  flex-wrap: wrap; /* Permite que bajen de línea en móvil */
+  justify-content: center;
+  gap: 40px;
+  padding: 0 20px;
+
+  .stat-item {
+    text-align: center;
+    min-width: 100px; /* Ancho mínimo para que no se aplasten */
+
+    .number {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--primary-brown);
+      font-weight: bold;
+    }
+    .label {
+      font-size: 0.8rem;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 4px;
+      display: block;
+    }
+  }
+}
+
+/* --- CARDS GRID (RESPONSIVE MAGIC) --- */
+.cards-grid {
+  display: grid;
+  /* Esto crea columnas automáticas: mínimo 260px, máximo 1 fracción */
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+
+  .card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.03);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Altura igual para todas */
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+
+    .card-image-container {
+      height: 180px;
+      width: 100%;
+      position: relative;
+      background-color: #eee;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .badge {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background-color: #D84315; /* Naranja quemado por defecto */
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        
+        &.primary { background-color: var(--primary-brown); }
+      }
+    }
+
+    .card-content {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+
+      h3 {
+        font-family: 'Playfair Display', serif;
+        color: var(--primary-brown);
+        margin: 0 0 8px 0;
+        font-size: 1.1rem;
+      }
+
+      p {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        line-height: 1.5;
+        margin: 0;
+        /* Truncado de texto elegante */
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    }
+  }
+}
+
+/* --- FOOTER --- */
+.page-footer {
+  text-align: center;
+  color: #aaa;
+  font-size: 0.85rem;
+  border-top: 1px solid #eee;
+  padding-top: 20px;
+}
+
+/* --- LOADING & EMPTY STATES --- */
+.loading-state, .empty-state {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-muted);
+}
+
+/* --- MEDIA QUERIES (AJUSTES MÓVILES) --- */
+@media (max-width: 768px) {
+  .dashboard-container {
     padding: 16px;
-    margin-bottom: 24px;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .hero-header {
+    h1 { font-size: 2rem; }
+    .description { font-size: 1rem; }
+  }
+
+  .stats-row {
+    gap: 20px 30px; /* Menos espacio horizontal, espacio vertical */
+    
+    .stat-item {
+      width: 45%; /* En móvil, los stats se ponen en cuadrícula de 2 */
+    }
   }
   
-  h1, h2 {
-    margin-top: 16px;
-    margin-bottom: 8px;
+  .top-sub-nav {
+    justify-content: space-between; /* Esparcir links en móvil */
+    font-size: 0.8rem;
   }
-  
-  img {
-    width: 100%;
-    max-width: 300px;
-    display: block;
-    margin: 12px auto;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-  }
-  
+}

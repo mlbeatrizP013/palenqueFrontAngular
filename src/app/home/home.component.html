@@ -1,65 +1,114 @@
-@if (infoHome$ | async; as info) {
+@if (infoHome$ | async; as infoList) {
 
-  @if (info.length > 0) {
+  @if (infoList.length > 0) {
+    @let item = infoList[0];
 
-    @for (item of info; track item.id) {
+    <div class="dashboard-container">
 
-      <article class="info-card">
+      <nav class="top-sub-nav">
+        <a href="javascript:void(0)">Inicio</a>
+        <a href="javascript:void(0)" class="active-tab">📍 Palenque</a>
+        <a href="javascript:void(0)">Foro</a>
+      </nav>
 
-        <header>
-          <h1>Historia</h1>
-        </header>
+      <header class="hero-header">
+        <h1>Palenque <span>PALENQUE</span></h1>
+        <p class="description">
+          Descubre nuestro hogar ancestral donde nace el mezcal más auténtico de Oaxaca.
+          Un lugar donde la tradición se encuentra con la innovación para crear experiencias únicas.
+        </p>
 
-        <p>{{ item.historia }}</p>
+        <div class="stats-row">
+          <div class="stat-item">
+            <span class="number">40+</span>
+            <span class="label">Años tradición</span>
+          </div>
+          <div class="stat-item">
+            <span class="number">5</span>
+            <span class="label">Hectáreas</span>
+          </div>
+          <div class="stat-item">
+            <span class="number">3</span>
+            <span class="label">Generaciones</span>
+          </div>
+          <div class="stat-item">
+            <span class="number">100%</span>
+            <span class="label">Agave Espadín</span>
+          </div>
+          <div class="stat-item">
+            <span class="number">15</span>
+            <span class="label">Años maduración</span>
+          </div>
+          <div class="stat-item">
+            <span class="number">2</span>
+            <span class="label">Alambiques</span>
+          </div>
+        </div>
+      </header>
 
-        <h2>Visión</h2>
-        <p>{{ item.vision }}</p>
+      <section class="cards-grid">
 
-        <h2>Misión</h2>
-        <p>{{ item.mision }}</p>
+        <article class="card">
+          <div class="card-image-container">
+            <img [src]="item.imageUrl || 'https://via.placeholder.com/400x300'" alt="Campos">
+            <span class="badge">Cultivo</span>
+          </div>
+          <div class="card-content">
+            <h3>Campos de Agave</h3>
+            <p>{{ item.ubicacion }} - {{ item.historia | slice:0:90 }}...</p>
+          </div>
+        </article>
 
-        <h2>Valores</h2>
-        <p>{{ item.valores }}</p>
+        <article class="card">
+          <div class="card-image-container">
+            <img src="https://i.pinimg.com/564x/d2/e2/d7/d2e2d7f0c484853456789012.jpg" alt="Maestro">
+            <span class="badge primary">Artesanos</span>
+          </div>
+          <div class="card-content">
+            <h3>Maestro Mezcalero</h3>
+            <p>{{ item.maestroMezcal }}</p>
+          </div>
+        </article>
 
-        <h2>Normas de Producción</h2>
-        <p>{{ item.normasProduccion }}</p>
+        <article class="card">
+          <div class="card-image-container">
+            <img src="https://i.pinimg.com/564x/a1/b2/c3/botella_mezcal.jpg" alt="Destilación">
+            <span class="badge">Proceso</span>
+          </div>
+          <div class="card-content">
+            <h3>Destilación Artesanal</h3>
+            <p>{{ item.vision }}</p>
+          </div>
+        </article>
 
-        <h2>Maestro Mezcalero</h2>
-        <p>{{ item.maestroMezcal }}</p>
+        <article class="card">
+          <div class="card-image-container">
+            <img src="https://i.pinimg.com/564x/fire_pit_mezcal.jpg" alt="Cocina">
+            <span class="badge">Tradición</span>
+          </div>
+          <div class="card-content">
+            <h3>Cocina Tradicional</h3>
+            <p>{{ item.mision }} - {{ item.valores }}</p>
+          </div>
+        </article>
 
-        <h2>Ubicación</h2>
-        <p>{{ item.ubicacion }}</p>
+      </section>
 
-        <h2>Contacto</h2>
-        <p>Tel: {{ item.numeroContacto }}</p>
-        <p>Base64 (primeros 40 chars): {{ item.imageUrl.slice(0, 40) }}</p>
-<p>Longitud: {{ item.imageUrl.length }}</p>
+      <footer class="page-footer">
+        <p>Contacto: {{ item.numeroContacto }} | {{ item.normasProduccion }}</p>
+      </footer>
 
-
-
-        <h2>Imagen</h2>
-
-        @if (item.imageUrl) {
-          <img [src]="item.imageUrl" alt="Imagen" />
-
-        }
-
-        <footer>
-          <small>Creado: {{ item.createdAt | date:'medium' }}</small>
-        </footer>
-
-      </article>
-
-    }
+    </div>
 
   } @else {
-
-    <p>No hay información disponible.</p>
-
+    <div class="empty-state">
+      <p>No hay información disponible del Palenque.</p>
+    </div>
   }
 
 } @else {
-
-  <p>Cargando información...</p>
-
+  <div class="loading-state">
+    <div class="spinner"></div>
+    <p>Cargando...</p>
+  </div>
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { switchMap, catchError, finalize } from 'rxjs/operators';
 import { ServiceAPI } from '../services/service-api';
@@ -10,7 +11,7 @@ import { ServiceAPI } from '../services/service-api';
   templateUrl: './solicitud.component.html',
   styleUrls: ['./solicitud.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
 })
 export class SolicitudComponent  implements OnInit {
   form!: FormGroup;
@@ -20,7 +21,14 @@ export class SolicitudComponent  implements OnInit {
   errorMsg = '';
   selectedCata: any | null = null;
 
-  constructor(private fb: FormBuilder, private api: ServiceAPI) { }
+  constructor(private fb: FormBuilder, private api: ServiceAPI, private router: Router) {
+    // Verificar si hay una experiencia seleccionada en el estado de navegación
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras?.state as { experienciaSeleccionada?: any };
+    if (state?.experienciaSeleccionada) {
+      this.selectedCata = state.experienciaSeleccionada;
+    }
+  }
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -31,6 +39,11 @@ export class SolicitudComponent  implements OnInit {
       Idcata: [null, [Validators.required]],
     });
     this.catas$ = this.api.findAll();
+    
+    // Si hay una experiencia pre-seleccionada, cargarla en el formulario
+    if (this.selectedCata) {
+      this.form.patchValue({ Idcata: this.selectedCata.id });
+    }
   }
 
   selectCata(cata: any) {
@@ -45,8 +58,11 @@ export class SolicitudComponent  implements OnInit {
   }
 
   cambiarCata() {
-    this.selectedCata = null;
-    this.form.patchValue({ Idcata: null });
+    this.router.navigate(['/tabs/experiencia']);
+  }
+
+  volverAExperiencias() {
+    this.router.navigate(['/tabs/experiencia']);
   }
 
   submit() {

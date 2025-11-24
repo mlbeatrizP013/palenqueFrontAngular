@@ -1,9 +1,11 @@
-/* Colores del diseño */
+/* --- Variables y Configuración Base --- */
 :host {
-  --sidebar-bg: #5a4b40; 
-  --sidebar-text: #ffffff;
-  --sidebar-active-bg: #7a6a60; 
-  --visita-btn-bg: #5f7a61; 
+  --sidebar-bg: #4E3B31;       /* Un café un poco más oscuro y rico (Chocolate Amargo) */
+  --sidebar-text: #E8E8E8;     /* Blanco hueso, menos agresivo que el blanco puro */
+  --sidebar-active-bg: #D2B48C;/* Dorado/Beige para el item activo (Contraste Premium) */
+  --sidebar-active-text: #3E2C22; /* Texto oscuro para el item activo */
+  --visita-btn-bg: #5f7a61;    /* Tu verde olivo está bien */
+  --font-serif: 'Playfair Display', serif; /* SUGERENCIA: Usa una fuente con patines */
 }
 
 .sidebar-container {
@@ -12,97 +14,139 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  padding: 16px;
+  padding: 20px; /* Un poco más de aire */
+  box-shadow: 4px 0 15px rgba(0,0,0,0.15); /* Sombra suave a la derecha para profundidad */
+  position: relative;
+  z-index: 10;
 }
 
+/* --- SECCIÓN DEL LOGO (La Joya de la Corona) --- */
 .logo-header {
-  /* ...otros estilos... */
-
-  /* Estilo para tu logo personalizado */
-  .sidebar-logo-img {
-    height: 50px;  /* 2.5rem = 40px. Ajusta la altura como necesites */
-    width: 200px;   /* Ajusta el ancho como necesites */
-    margin-right: 12px;
-    flex-shrink: 0;
-    object-fit: contain; /* Evita que la imagen se distorsione */
-    border-radius: 4px; /* Opcional: si tu logo es cuadrado */
-  }
-
-  
-}
-
-/* CSS para <nav> y <a> */
-.nav-list {
-  padding-top: 20px;
-  flex-grow: 1; /* Empuja el footer hacia abajo */
   display: flex;
   flex-direction: column;
-  gap: 8px; /* Espacio entre links */
+  align-items: center;
+  margin-bottom: 30px; /* Separación con el menú */
+
+  .sidebar-logo-img {
+    /* Ajustamos el tamaño para que sea sutil, no invasivo */
+    width: 200px;       
+    height: auto;
+    margin-bottom: 12px; 
+    object-fit: contain;
+    filter: brightness(0) invert(1) opacity(0.9); /* Vuelve el logo blanco si es negro */
+  }
+
+  .logo-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    h2 {
+      margin: 0;
+      font-family: var(--font-serif); /* Fuente elegante */
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 2px; /* Espaciado entre letras = LUJO */
+      color: #ffffff;
+      text-transform: uppercase;
+    }
+
+    p {
+      margin: 4px 0 0 0;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 3px; /* Mucho espacio para el subtítulo */
+      color: #D2B48C;      /* Color dorado/café claro */
+      font-weight: 400;
+    }
+  }
+}
+
+/* --- NAVEGACIÓN --- */
+.nav-list {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 
   a {
     display: flex;
     align-items: center;
     padding: 12px 16px;
-    border-radius: 8px;
+    border-radius: 12px; /* Bordes más redondeados */
     color: var(--sidebar-text);
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease; /* Transición suave para todo */
 
-    /* Estilo para los SVG de la lista */
     .sidebar-icon {
-      width: 1.2rem; 
-      height: 1.2rem;
-      margin-right: 16px; /* Espacio entre icono y texto */
-      color: rgba(255, 255, 255, 0.8);
-      flex-shrink: 0;
+      width: 1.3rem;
+      height: 1.3rem;
+      margin-right: 14px;
+      color: rgba(255, 255, 255, 0.7); /* Icono un poco transparente */
+      transition: color 0.3s ease;
     }
-    
-    /* ESTA ES LA CLAVE para el link activo */
-    &.active-link {
-      background: var(--sidebar-active-bg);
-      color: #ffffff;
-      font-weight: 600;
 
+    /* ESTADO HOVER (Pasar el mouse) */
+    &:hover:not(.active-link) {
+      background: rgba(255, 255, 255, 0.08); /* Muy sutil */
+      transform: translateX(4px); /* Pequeño movimiento a la derecha */
+      color: #ffffff;
+      
       .sidebar-icon {
-        color: #ffffff; /* Icono se vuelve blanco sólido */
+        color: #ffffff;
       }
     }
 
-    &:hover:not(.active-link) {
-      background: rgba(255, 255, 255, 0.1);
+    /* ESTADO ACTIVO (Página actual) */
+    &.active-link {
+      background: var(--sidebar-active-bg);
+      color: var(--sidebar-active-text); /* Texto oscuro sobre fondo claro */
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2); /* Sombrita para resaltar */
+
+      .sidebar-icon {
+        color: var(--sidebar-active-text); /* Icono oscuro */
+      }
     }
   }
 }
 
+/* --- FOOTER --- */
 .sidebar-footer {
+  padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.1); /* Línea divisoria sutil */
+
   .visita-btn {
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
     padding: 14px;
-    border-radius: 8px;
+    border-radius: 12px;
     background: var(--visita-btn-bg);
     color: #ffffff;
     font-weight: 600;
     text-decoration: none;
-    text-align: center;
-    
-    /* Estilo para el SVG del botón */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    transition: transform 0.2s, background 0.3s;
+
     .sidebar-icon {
       width: 1.2rem;
       height: 1.2rem;
-      margin-right: 12px;
-      flex-shrink: 0;
+      margin-right: 10px;
     }
 
-    &.active-button {
-      background: #ffffff;
-      color: var(--visita-btn-bg);
+    &:hover {
+      background: lighten(#5f7a61, 5%); /* Aclara el verde un poco */
+      transform: scale(1.02); /* Efecto de "pulsar" */
     }
-
-    &:hover:not(.active-button) {
-      opacity: 0.9;
+    
+    &:active {
+      transform: scale(0.98); /* Efecto de click */
     }
   }
 }

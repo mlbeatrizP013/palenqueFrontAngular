@@ -17,8 +17,20 @@ import { CommonModule } from '@angular/common';
 })
 export class TabsComponent  implements OnInit {
 
-  constructor() { }
+ isMenuOpen: boolean = false;
+
+  constructor() {}
+
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  // Función para cerrar el menú cuando se hace click en el fondo oscuro
+  closeMenu() {
+    this.isMenuOpen = false;
+  }
 
   ngOnInit() {}
+  
 
 }

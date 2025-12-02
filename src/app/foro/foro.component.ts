@@ -30,6 +30,6 @@ export class ForoComponent implements OnInit {
   }
 
   openPost(id: string) {
-    this.router.navigate(['/foro', id]);
+    this.router.navigate(['tabs/foro', id]);
   }
 }

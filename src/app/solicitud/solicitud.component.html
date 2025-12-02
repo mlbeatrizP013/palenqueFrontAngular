@@ -1,3 +1,11 @@
+<!-- Toast Notification -->
+@if (showToast) {
+  <div class="toast" [class.success]="toastType === 'success'" [class.error]="toastType === 'error'">
+    <span class="toast-icon">{{ toastType === 'success' ? '✓' : '✕' }}</span>
+    <span class="toast-message">{{ toastMessage }}</span>
+  </div>
+}
+
 <section class="solicitud">
   @if (!selectedCata) {
     <div class="catas-container">

@@ -1,8 +1,10 @@
-import { ChangeDetectionStrategy, Component, computed, signal, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, computed, signal, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { ServiceAPI } from '../services/service-api';
+import { filter } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 interface Asistente {
   id: number;
@@ -41,10 +43,12 @@ interface DiaCalendario {
   styleUrls: ['./experiencia.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ExperienciaComponent implements OnInit {
+export class ExperienciaComponent implements OnInit, OnDestroy {
   private api = inject(ServiceAPI);
   private fb = inject(FormBuilder);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
+  private routerSubscription?: Subscription;
 
   experiencias = signal<Experiencia[]>([]);
   asistentes = signal<Asistente[]>([]);
@@ -77,9 +81,25 @@ export class ExperienciaComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarExperiencias();
+    
+    // Escuchar eventos de navegación para recargar datos al volver
+    this.routerSubscription = this.router.events
+      .pipe(
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+        filter(event => event.urlAfterRedirects.includes('/experiencia'))
+      )
+      .subscribe(() => {
+        console.log('🔄 Recargando experiencias al volver a la página');
+        this.cargarExperiencias();
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.routerSubscription?.unsubscribe();
   }
 
   cargarExperiencias(): void {
+    console.log('📥 Cargando experiencias desde el backend...');
     this.api.findAll().subscribe({
       next: (data: any[]) => {
         // Mapea correctamente desde el DTO del backend
@@ -93,6 +113,10 @@ export class ExperienciaComponent implements OnInit {
           estado: exp.estado
         }));
         this.experiencias.set(experienciasFormateadas);
+        console.log('✅ Experiencias actualizadas:', experienciasFormateadas);
+        
+        // Forzar detección de cambios para reflejar los nuevos datos
+        this.cdr.markForCheck();
       },
       error: (err) => {
         console.error('Error cargando experiencias:', err);

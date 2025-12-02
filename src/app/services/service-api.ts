@@ -96,7 +96,13 @@ export class ServiceAPI {
 
   // Metodo para actualizar una bebida por ID
   patchBebida(id: number, data: any): Observable<any> {
-    return this.http.patch<any>(`${this.urlBebidas}/update/${id}`, data);
+    console.log(`🔄 Actualizando bebida ${id} con:`, data);
+    return this.http.patch<any>(`${this.urlBebidas}/update/${id}`, data).pipe(
+      catchError((err) => {
+        console.error('❌ Error actualizando bebida:', err);
+        return throwError(() => err);
+      })
+    );
   }
 
   // Metodo para eliminar una bebida por ID
@@ -131,6 +137,16 @@ export class ServiceAPI {
     return this.http.get(this.urlUsuario);
   }
 
+  // Método para obtener solo usuarios con Idcata asignado (usuarios de experiencias)
+  getUsuariosConExperiencia(): Observable<any[]> {
+    return this.http.get<any[]>(this.urlUsuario).pipe(
+      catchError((err) => {
+        console.error('Error obteniendo usuarios:', err);
+        return throwError(() => err);
+      })
+    );
+  }
+
   // Método para crear un usuario
   createUsuario(data: any): Observable<any> {
     return this.http.post(this.urlUsuario, data);
@@ -147,11 +163,43 @@ export class ServiceAPI {
   }
 
   // ============ APARTADOS ============
-  findAllApartados(): Observable<any> {
-    return this.http.get(`${this.urlapartados}`);
+  findAllApartados(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.urlapartados}`).pipe(
+      catchError((err) => {
+        console.error('Error obteniendo apartados:', err);
+        return throwError(() => err);
+      })
+    );
   }
 
-  createApartado(data: any): Observable<any> {
-    return this.http.post(`${this.urlapartados}`, data);
+  createApartado(data: { cantidad: number; usuarioID: number; bebidasID: number }): Observable<any> {
+    console.log('📦 Enviando apartado a:', this.urlapartados);
+    console.log('📦 Datos:', data);
+    return this.http.post(this.urlapartados, data).pipe(
+      catchError((err) => {
+        console.error('Error creando apartado:', err);
+        console.error('URL intentada:', this.urlapartados);
+        console.error('Detalles del error:', err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  deleteApartado(id: number): Observable<any> {
+    return this.http.delete(`${this.urlapartados}/remove/${id}`, { responseType: 'text' as 'json' }).pipe(
+      catchError((err) => {
+        console.error('Error eliminando apartado:', err);
+        return throwError(() => err);
+      })
+    );
+  }
+
+  getApartadosByUsuario(usuarioId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.urlapartados}/usuario/${usuarioId}`).pipe(
+      catchError((err) => {
+        console.error('Error obteniendo apartados del usuario:', err);
+        return throwError(() => err);
+      })
+    );
   }
 }

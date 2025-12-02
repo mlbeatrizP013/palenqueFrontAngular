@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { switchMap, catchError, finalize } from 'rxjs/operators';
 import { ServiceAPI } from '../services/service-api';
@@ -11,7 +11,7 @@ import { ServiceAPI } from '../services/service-api';
   templateUrl: './solicitud.component.html',
   styleUrls: ['./solicitud.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule],
 })
 export class SolicitudComponent  implements OnInit {
   form!: FormGroup;
@@ -20,6 +20,9 @@ export class SolicitudComponent  implements OnInit {
   successMsg = '';
   errorMsg = '';
   selectedCata: any | null = null;
+  showToast = false;
+  toastMessage = '';
+  toastType: 'success' | 'error' = 'success';
 
   constructor(private fb: FormBuilder, private api: ServiceAPI, private router: Router) {
     // Verificar si hay una experiencia seleccionada en el estado de navegación
@@ -47,13 +50,25 @@ export class SolicitudComponent  implements OnInit {
   }
 
   selectCata(cata: any) {
-    if ((cata?.capacidad ?? 0) <= 0 || cata?.estado === false) {
-      this.errorMsg = 'La cata no tiene capacidad disponible';
+    const cuposDisponibles = cata?.capacidad ?? 0;
+    
+    if (cuposDisponibles <= 0) {
+      this.errorMsg = '❌ Cupos no disponibles para esta cata. Por favor, selecciona otra.';
+      this.selectedCata = null;
+      this.form.patchValue({ Idcata: null });
       return;
     }
+    
+    if (cata?.estado === false) {
+      this.errorMsg = '❌ Esta cata no está disponible en este momento.';
+      this.selectedCata = null;
+      this.form.patchValue({ Idcata: null });
+      return;
+    }
+    
     this.selectedCata = cata;
     this.form.patchValue({ Idcata: cata?.id ?? null });
-    this.successMsg = '';
+    this.successMsg = `✓ Cata seleccionada: ${cuposDisponibles} cupos disponibles`;
     this.errorMsg = '';
   }
 
@@ -63,6 +78,21 @@ export class SolicitudComponent  implements OnInit {
 
   volverAExperiencias() {
     this.router.navigate(['/tabs/experiencia']);
+  }
+
+  mostrarToast(mensaje: string, tipo: 'success' | 'error' = 'success'): void {
+    this.toastMessage = mensaje;
+    this.toastType = tipo;
+    this.showToast = true;
+    
+    // Ocultar toast después de 3 segundos (3000ms)
+    setTimeout(() => {
+      this.showToast = false;
+      // Limpiar mensaje después de que termine la animación
+      setTimeout(() => {
+        this.toastMessage = '';
+      }, 400);
+    }, 3000);
   }
 
   submit() {
@@ -76,10 +106,22 @@ export class SolicitudComponent  implements OnInit {
       this.errorMsg = 'Primero selecciona un día de cata';
       return;
     }
-    if ((this.selectedCata?.capacidad ?? 0) <= 0) {
-      this.errorMsg = 'La cata seleccionada no tiene capacidad disponible';
+    
+    // Verificar cupos disponibles antes de proceder
+    const cuposDisponibles = this.selectedCata?.capacidad ?? 0;
+    if (cuposDisponibles <= 0) {
+      console.warn('⚠️ Intento de registro sin cupos disponibles');
+      
+      // Mostrar toast de error
+      this.mostrarToast('❌ Cupos no disponibles. Redirigiendo al calendario...', 'error');
+      
+      // Redirigir después de 3 segundos
+      setTimeout(() => {
+        this.router.navigate(['/tabs/experiencia']);
+      }, 3000);
       return;
     }
+    
     const raw = this.form.value;
     const payload = {
       nome: raw.nome,
@@ -89,35 +131,49 @@ export class SolicitudComponent  implements OnInit {
       genero: raw.genero,
       Idcata: Number(raw.Idcata),
     };
+    
     this.loading = true;
-    const nextCap = Math.max((this.selectedCata?.capacidad ?? 0) - 1, 0);
+    console.log('📝 Registrando usuario. Cupos antes:', cuposDisponibles);
+    
+    const nextCap = Math.max(cuposDisponibles - 1, 0);
+    
     this.api
       .createUsuario(payload)
       .pipe(
-        switchMap(() =>
-          this.api.patchExperiencia(Number(raw.Idcata), { capacidad: nextCap }).pipe(
+        switchMap((usuarioCreado) => {
+          console.log('✅ Usuario creado:', usuarioCreado);
+          console.log('🔄 Actualizando capacidad a:', nextCap);
+          
+          return this.api.patchExperiencia(Number(raw.Idcata), { capacidad: nextCap }).pipe(
             catchError((err) => {
-              console.error('PATCH capacidad error:', err);
-              // No rompemos el flujo si falla el patch: informamos y continuamos
+              console.error('❌ Error actualizando capacidad:', err);
               this.errorMsg = 'Usuario creado, pero no se actualizó la capacidad';
               return of(null);
             })
-          )
-        ),
+          );
+        }),
         finalize(() => (this.loading = false))
       )
       .subscribe({
-        next: () => {
-          this.successMsg = 'Usuario creado correctamente';
-          // Reiniciar al selector de catas y refrescar lista
-          this.selectedCata = null;
-          this.form.reset({ genero: 'masculino', Idcata: null });
-          this.catas$ = this.api.findAll();
+        next: (response) => {
+          if (response) {
+            console.log('✅ Capacidad actualizada en BD:', response);
+          }
+          
+          console.log('✅ Proceso completo: Usuario registrado y capacidad actualizada');
+          
+          // Mostrar toast de éxito
+          this.mostrarToast('✓ Registro exitoso. Redirigiendo al calendario...', 'success');
+          
+          // Esperar 3 segundos para mostrar el toast y luego redirigir
+          setTimeout(() => {
+            this.router.navigate(['/tabs/experiencia']);
+          }, 3000);
         },
         error: (err) => {
           const detail = err?.error?.message || err?.error || err?.statusText || 'Error al crear usuario';
           this.errorMsg = typeof detail === 'string' ? detail : 'Error al crear usuario';
-          console.error('POST /usuario error:', err);
+          console.error('❌ Error en el proceso de registro:', err);
           console.log('Payload enviado:', payload);
         },
       });

@@ -25,6 +25,9 @@
       name="imageUrl"
       style="display:block; width:100%; max-width:600px; margin-bottom:8px; padding:6px;"
     />
+    @if (imageUrlError) {
+      <p style="color:#b00020; margin-top:-4px; margin-bottom:8px;">{{ imageUrlError }}</p>
+    }
     <textarea
       placeholder="Escribe tu comentario"
       [(ngModel)]="newComment.text"

@@ -1,44 +1,117 @@
+/* --- ESTILOS DE ESCRITORIO (Lo que ya tenías) --- */
+.app-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr; /* Estructura original */
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  position: relative; /* Necesario para posicionar elementos absolutos */
+}
+
+.main-content { /* Ajuste: cambié .main-content-wrapper a .main-content según tu HTML */
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #f4f7fa; 
+  /* Ajuste para que el botón no tape contenido al inicio */
+  position: relative;
+}
+
+main {
+  flex-grow: 1;
+  overflow-y: auto;
+  /* padding: 24px;  <- Puedes descomentarlo si quieres espacio */
+}
+
+/* El botón del menú está oculto por defecto (en escritorio) */
+.mobile-menu-btn, .menu-overlay {
+  display: none;
+}
+
+/* --- ESTILOS PARA CELULAR (Tablets y Móviles) --- */
+@media (max-width: 768px) {
+
+  /* 1. Cambiamos el Grid: El sidebar deja de ocupar espacio en la columna */
+  .app-layout {
+    grid-template-columns: 1fr; /* Una sola columna */
+  }
+
+  /* 2. Estilo del Botón de Menú */
+  .mobile-menu-btn {
+    display: flex;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    z-index: 50; /* Por encima del contenido */
+    background: #4E3B31; /* Color de tu sidebar */
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+
+    svg {
+      width: 28px;
+      height: 28px;
+    }
+  }
+
+  /* 3. Comportamiento del Sidebar en Móvil */
+  app-sidebar {
+    position: fixed;     /* Flotante */
+    top: 0;
+    left: -280px;        /* Escondido a la izquierda (ancho sidebar + sombra) */
+    width: 260px;
+    height: 100vh;
+    z-index: 1000;       /* Muy por encima de todo */
+    transition: left 0.3s ease-in-out; /* Animación suave */
+    box-shadow: 4px 0 15px rgba(0,0,0,0.3);
+  }
+
+  /* Cuando tiene la clase .open, se muestra */
+  app-sidebar.open {
+    left: 0; 
+  }
+
+  /* 4. Overlay (Fondo oscuro) */
+  .menu-overlay {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5); /* Semi transparente */
+    z-index: 900; /* Debajo del sidebar, encima del contenido */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+  }
+
+  .menu-overlay.show {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  /* Ajuste opcional: Dar espacio arriba en el contenido para que no lo tape el botón */
+  main {
+    padding-top: 60px; 
+  }
+}
 :host {
-	display: flex;
-	flex-direction: column;
-	width: 100%;
-	height: 100vh;
-	overflow: hidden;
-}
-
-.tabs {
-	display: flex;
-	gap: 12px;
-	padding: 10px 12px;
-	border-bottom: 1px solid #e5e7eb;
-	background: #fff;
-	flex-shrink: 0;
-	position: sticky;
-	top: 0;
-	z-index: 100;
-}
-
-/* Contenedor del router-outlet debe permitir scroll */
-:host > router-outlet + * {
-	flex: 1;
-	overflow-y: auto;
-	overflow-x: hidden;
-	-webkit-overflow-scrolling: touch;
-	height: calc(100vh - 60px);
-}
-
-.tabs a {
-	padding: 8px 12px;
-	border-radius: 6px;
-	text-decoration: none;
-	color: #374151;
-}
-
-.tabs a:hover {
-	background: #f3f4f6;
-}
-
-.tabs a.active {
-	background: #111827;
-	color: #fff;
+  display: block;
+  width: 100%;
+  /* CAMBIO CLAVE AQUÍ PARA EL SCROLL: */
+  height: 100vh;      /* Ocupa exactamente el alto de la ventana */
+  overflow-y: auto;   /* Activa el scroll vertical si el contenido es largo */
+  overflow-x: hidden; /* Evita scroll horizontal */
+  background: linear-gradient(135deg, #f5f1e8 0%, #e8dcc8 100%);
+  font-family: 'Lato', sans-serif;
+  
+  --primary-brown: #4E3629;
+  --accent-gold: #C67C4E;
+  --text-dark: #2C2C2C;
+  --text-muted: #666;
 }

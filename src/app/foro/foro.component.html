@@ -1,17 +1,7 @@
-@if (loading) {
-  <p>Cargando publicaciones...</p>
-} @else {
-  @if (posts.length === 0) {
-    <p>No hay publicaciones aún</p>
-  } @else {
-    <ul>
-      @for (post of posts; track post.id) {
-        <li (click)="openPost(post.id)" style="cursor: pointer; margin-bottom: 10px;">
-          <strong>{{ post.title }}</strong><br>
-          <small>{{ post.published | date }}</small>
-        </li>
-      }
-    </ul>
-  }
-}
-
+<iframe
+  src="https://historiaspalenque.blogspot.com/2025/11/historias-palenque.html"
+  style="width:100%; height:100%; border:none;"
+  referrerpolicy="no-referrer"
+  loading="lazy"
+  sandbox="allow-scripts allow-same-origin allow-popups"
+></iframe>

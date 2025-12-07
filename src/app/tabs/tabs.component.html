@@ -1,22 +1,20 @@
-<!-- <nav class="tabs">
-  <a routerLink="/tabs/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
-  <a routerLink="/tabs/foro" routerLinkActive="active">Foro</a>
-  <a routerLink="/tabs/tienda" routerLinkActive="active">Tienda</a>
-    <a routerLink="/tabs/experiencia" routerLinkActive="active">Experiencia</a>
-
-</nav> -->
-
 <div class="app-layout">
-  
-  <button class="mobile-menu-btn" (click)="toggleMenu()">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-    </svg>
-  </button>
+
+  <header class="mobile-header">
+    <button class="icon-btn" (click)="toggleMenu()">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+      </svg>
+    </button>
+    
+    <span class="header-title">{{ pageTitle }}</span>
+
+    <div class="spacer"></div> 
+  </header>
 
   <div class="menu-overlay" [class.show]="isMenuOpen" (click)="closeMenu()"></div>
 
-  <app-sidebar [class.open]="isMenuOpen" (click)="closeMenu()"></app-sidebar>
+  <app-sidebar [class.open]="isMenuOpen"></app-sidebar>
   
   <div class="main-content">
     <main>

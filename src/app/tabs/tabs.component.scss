@@ -1,56 +1,84 @@
-/* --- ESTILOS DE ESCRITORIO (Lo que ya tenías) --- */
+/* --- ESTILOS DE ESCRITORIO --- */
 .app-layout {
   display: grid;
-  grid-template-columns: 260px 1fr; /* Estructura original */
+  grid-template-columns: 260px 1fr;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  position: relative; /* Necesario para posicionar elementos absolutos */
+  position: relative;
 }
 
-.main-content { /* Ajuste: cambié .main-content-wrapper a .main-content según tu HTML */
+.mobile-header {
+  display: none; /* Oculto en escritorio */
+}
+
+.main-content {
   display: flex;
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
   background-color: #f4f7fa; 
-  /* Ajuste para que el botón no tape contenido al inicio */
   position: relative;
 }
 
 main {
   flex-grow: 1;
   overflow-y: auto;
-  /* padding: 24px;  <- Puedes descomentarlo si quieres espacio */
 }
 
-/* El botón del menú está oculto por defecto (en escritorio) */
-.mobile-menu-btn, .menu-overlay {
-  display: none;
-}
+.menu-overlay { display: none; }
 
-/* --- ESTILOS PARA CELULAR (Tablets y Móviles) --- */
+
+/* --- ESTILOS MÓVILES (Spotify Style) --- */
 @media (max-width: 768px) {
 
-  /* 1. Cambiamos el Grid: El sidebar deja de ocupar espacio en la columna */
   .app-layout {
-    grid-template-columns: 1fr; /* Una sola columna */
+    grid-template-columns: 1fr;
   }
 
-  /* 2. Estilo del Botón de Menú */
-  .mobile-menu-btn {
+  /* 1. La Barra Superior (Header) */
+  .mobile-header {
     display: flex;
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    z-index: 50; /* Por encima del contenido */
-    background: #4E3B31; /* Color de tu sidebar */
+    align-items: center;
+    justify-content: space-between; /* Botón izq, Título centro */
+    
+    position: fixed; /* Se queda pegado arriba */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px; /* Altura de la barra */
+    
+    background: #4E3B31; /* Tu color Café Oscuro */
+    /* Opcional: Efecto vidrio (si prefieres semitransparente)
+       background: rgba(78, 59, 49, 0.95);
+       backdrop-filter: blur(10px); 
+    */
+    
     color: white;
+    padding: 0 15px;
+    z-index: 500; /* Encima del contenido, debajo del sidebar */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+
+  /* El Título */
+  .header-title {
+    font-family: 'Playfair Display', serif; /* Tu fuente elegante */
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* El Botón */
+  .icon-btn {
+    background: transparent;
     border: none;
-    padding: 8px;
-    border-radius: 8px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 
     svg {
       width: 28px;
@@ -58,24 +86,34 @@ main {
     }
   }
 
-  /* 3. Comportamiento del Sidebar en Móvil */
+  /* Espaciador para centrar bien el título */
+  .spacer {
+    width: 28px; /* Mismo ancho que el botón para equilibrar */
+  }
+
+  /* 2. Ajuste del Contenido Principal */
+  main {
+    /* IMPORTANTE: Empujamos el contenido hacia abajo para que la barra 
+       no tape el principio de tus páginas */
+    padding-top: 60px; 
+  }
+
+  /* 3. Sidebar y Overlay (Igual que antes) */
   app-sidebar {
-    position: fixed;     /* Flotante */
+    position: fixed;
     top: 0;
-    left: -280px;        /* Escondido a la izquierda (ancho sidebar + sombra) */
+    left: -280px;
     width: 260px;
     height: 100vh;
-    z-index: 1000;       /* Muy por encima de todo */
-    transition: left 0.3s ease-in-out; /* Animación suave */
+    z-index: 1000; 
+    transition: left 0.3s ease-in-out;
     box-shadow: 4px 0 15px rgba(0,0,0,0.3);
   }
 
-  /* Cuando tiene la clase .open, se muestra */
   app-sidebar.open {
     left: 0; 
   }
 
-  /* 4. Overlay (Fondo oscuro) */
   .menu-overlay {
     display: block;
     position: fixed;
@@ -83,8 +121,8 @@ main {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.5); /* Semi transparente */
-    z-index: 900; /* Debajo del sidebar, encima del contenido */
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 900;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease;
@@ -94,12 +132,8 @@ main {
     opacity: 1;
     visibility: visible;
   }
-  
-  /* Ajuste opcional: Dar espacio arriba en el contenido para que no lo tape el botón */
-  main {
-    padding-top: 60px; 
-  }
 }
+
 :host {
   display: block;
   width: 100%;
